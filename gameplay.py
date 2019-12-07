@@ -4,13 +4,14 @@ card_values = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven'
 
 class Player:
 	#position, hand, offset, gameOver?
-	def __init__(self, isDealer):
-		self.hand = []
-		self.isDealer = isDealer
-		self.gameOver = False
-		self.isBusted = False
-		self.blackjack = False
-		self.offset = 0
+	def __init__(self, isDealer, position):
+		self.hand = [] #keeps track of the player's hand
+		self.isDealer = isDealer #if the player is a dealer
+		self.gameOver = False #if the player has lost
+		self.isBusted = False #if the player has busted
+		self.blackjack = False #if the player has blackjack initially
+		self.offset = 0 #measures how far over the cards need to be dealt each time
+		self.position = position #position of where the player's are physically
 
 #this will deal a card to player. it appends the card to the player's hand and then checks if they have busted
 #this involves picking up a card, reading it, and placing it by the player
@@ -68,7 +69,7 @@ def game():
 	dealer = Player(True)
 	players = []
 	for i in range(numPlayers):
-		players.append(Player(False)) #add a new player to players array
+		players.append(Player(False, i)) #add a new player to players array
 
 	#setup board
 	dealHand(dealer)
@@ -101,12 +102,14 @@ def game():
 		for player in players:
 			if !player.isBusted:
 				#player wins
+				print("Congratulations player " + str(player.position))
 			else:
 				#player loses
+				print("You lost " + str(player.position))
 	else:
 		#everyone that has not busted and has a value greater than the dealer's wins 
 		for player in players:
-			if !player.isBusted and total(player) > total(dealer):
+			if (!player.isBusted and total(player) > total(dealer)) or player.blackjack:
 				#player wins
 			else:
 				#player loses
