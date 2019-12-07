@@ -42,9 +42,16 @@ def total(player): #add up all cards in player's hand and return value
     		total += cardValues[card]
 		else:
 			aceCount += 1
-	for index in range(aceCount):
-
-    return total
+	#run through twice
+	totalLow = total
+	totalHigh = total
+	if aceCount >= 1:
+		totalHigh += 11 + (aceCount - 1)
+		totalLow += aceCount
+	if totalHigh > 21:
+		return totalLow
+	else:
+		return totalHigh
 
 def checkBust(player):
 	if total(player) > 21:
