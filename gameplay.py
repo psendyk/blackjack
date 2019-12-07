@@ -14,7 +14,7 @@ class Player:
 
 #this will deal a card to player. it appends the card to the player's hand and then checks if they have busted
 #this involves picking up a card, reading it, and placing it by the player
-def deal(player, orientation):
+def deal(player, orientation = 'up', fromTable = False):
 	player.offset += 1
 	#pick up card from physical deck
 	#get cardValue from computer vision
@@ -27,28 +27,23 @@ def deal(player, orientation):
 	player.hand.append(cardValue)
 	checkBust(player)
 
-
-def deal_hand(player): #deals 
+def dealHand(player): #deals 
     if player.isDealer:
     	deal(player, 'down')
 	else:
-		deal(player, 'up')
-	deal(player, 'up')
-	    
-
-def play_again():
-    again = raw_input("Do you want to play again? (Y/N) : ").lower() #replace to gesture 
-    if again == "y":
-	    dealer_hand = []
-	    player_hand = []
-	    game()
-    else:
-	    exit()
+		deal(player)
+	deal(player)	    
 
 def total(player): #add up all cards in player's hand and return value
-    total = 0	
+    total = 0
+    aceCount = 0 	
     for card in player.hand:
-    	#add up total
+    	if card != 'ace':
+    		total += cardValues[card]
+		else:
+			aceCount += 1
+	for index in range(aceCount):
+
     return total
 
 def checkBust(player):
@@ -56,31 +51,10 @@ def checkBust(player):
 		player.isBusted = True
 		player.gameOver = True
 
-def blackjack(player):
-	#differentiate between actual blackjack and other 21
-	if ace in player_hand:
-		if face_card or 10 in player_hand:
+def blackJack(player):
+	if ace in player.hand:
+		if faceCard or 10 in player.hand:
 			return True
-
-def score(dealer_hand, player_hand):
-	if total(player_hand) == 21:
-		print_results(dealer_hand, player_hand)
-		print "Congratulations! You got a Blackjack!\n"
-	elif total(dealer_hand) == 21:
-		print_results(dealer_hand, player_hand)		
-		print "Sorry, you lose. The dealer got a blackjack.\n"
-	elif total(player_hand) > 21:
-		print_results(dealer_hand, player_hand)
-		print "Sorry. You busted. You lose.\n"
-	elif total(dealer_hand) > 21:
-		print_results(dealer_hand, player_hand)			   
-		print "Dealer busts. You win!\n"
-	elif total(player_hand) < total(dealer_hand):
-		print_results(dealer_hand, player_hand)
-   		print "Sorry. Your score isn't higher than the dealer. You lose.\n"
-	elif total(player_hand) > total(dealer_hand):
-		print_results(dealer_hand, player_hand)			   
-		print "Congratulations. Your score is higher than the dealer. You win\n"		
 
 def game():
 	numPlayers = raw_input("Enter how many players are playing: ")
@@ -90,16 +64,16 @@ def game():
 		players.append(Player(False)) #add a new player to players array
 
 	#setup board
-	deal_hand(dealer)
+	dealHand(dealer)
 	for player in players:
-		deal_hand(player) 
+		dealHand(player) 
 
-	if blackjack(dealer):
+	if blackJack(dealer): #CORNER CASE: if dealer has blackjack immediately
 		#check if players have blackjack
 	
 	for player in players:
-		if blackjack(player):
-			player.blackjack = True
+		if blackJack(player):
+			player.blackJack = True
 			player.gameOver = True
 		while !player.gameOver #while the player hasnt either busted or quit
 			choice = raw_input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower() #convert to computer vision
@@ -109,6 +83,8 @@ def game():
 				player.gameOver = True
 
 	#now all the player turns are over so we can deal for dealer
+	#flip over face down card
+	deal(dealer, 'up', True)
 	while total(dealer) < 17 and !dealer.isBusted:
 		deal(dealer)
 
