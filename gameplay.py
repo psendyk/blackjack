@@ -17,14 +17,12 @@ class Player:
 #this involves picking up a card, reading it, and placing it by the player
 def deal(player, orientation = 'up', fromTable = False):
 	player.offset += 1
+
+	#DO KINEMATICS HERE <-------------
 	#pick up card from physical deck
 	#get cardValue from computer vision
-	cardValue = 0 #replace later
 	#place down at player + offset
-	if (orientation == 'down'):
-		#face down
-	else:
-		#face up
+	cardValue = 0 #replace later with computer vision value
 	player.hand.append(cardValue)
 	checkBust(player)
 
