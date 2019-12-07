@@ -1,13 +1,3 @@
-"""
-*    Title: python blackjack
-*    Author: mjhea0
-*    Date: 11/25/2019
-*    Availability: https://gist.github.com/mjhea0/5680216
-*
-"""
-import os
-import random
-
 #dictionary of card names to values
 card_values = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,
 'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace' = [1, 11]} 
