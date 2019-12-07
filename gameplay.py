@@ -10,7 +10,7 @@ import random
 
 #dictionary of card names to values
 card_values = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,
-'ten':10, 'jack':10, 'queen':10, 'king':10}
+'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace' = [1, 11]} 
 
 class Player:
 	#position, hand, offset, gameOver?
@@ -19,11 +19,13 @@ class Player:
 		self.isDealer = isDealer
 		self.gameOver = False
 		self.isBusted = False
+		self.blackjack = False
+		self.offset = 0
 
-#this will deal a card to player. it returns the value of the card
+#this will deal a card to player. it appends the card to the player's hand and then checks if they have busted
 #this involves picking up a card, reading it, and placing it by the player
 def deal(player, orientation):
-	offsets[player] += 1
+	player.offset += 1
 	#pick up card from physical deck
 	#get cardValue from computer vision
 	cardValue = 0 #replace later
@@ -33,6 +35,7 @@ def deal(player, orientation):
 	else:
 		#face up
 	player.hand.append(cardValue)
+	checkBust(player)
 
 
 def deal_hand(player): #deals 
@@ -67,8 +70,7 @@ def blackjack(player):
 	#differentiate between actual blackjack and other 21
 	if ace in player_hand:
 		if face_card or 10 in player_hand:
-			print(str(player) + " got blackjack")
-			player.gameOver = True
+			return True
 
 def score(dealer_hand, player_hand):
 	if total(player_hand) == 21:
@@ -91,33 +93,35 @@ def score(dealer_hand, player_hand):
 		print "Congratulations. Your score is higher than the dealer. You win\n"		
 
 def game():
-	choice = 0 #gesture
 	numPlayers = raw_input("Enter how many players are playing: ")
-	dealer = Player()
+	dealer = Player(True)
 	players = []
 	for i in range(numPlayers):
-		players.append(Player()) #add a new player to players array
+		players.append(Player(False)) #add a new player to players array
 
 	#setup board
-	deal_hand(dealer, True)
-	blackjack(dealer) #not really sure when to check blackjack
-	for player in players: #deal 2 to each once or 1 to each twice?
-		deal_hand(player, False) 
-
-	blackjack(dealer)
+	deal_hand(dealer)
 	for player in players:
+		deal_hand(player) 
+
+	if blackjack(dealer):
+		#check if players have blackjack
+	
+	for player in players:
+		if blackjack(player):
+			player.blackjack = True
+			player.gameOver = True
 		while !player.gameOver #while the player hasnt either busted or quit
 			choice = raw_input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower() #convert to computer vision
 			if choice == "hit":
 				deal(player)
-				blackjack(player) #combine blackjack() and checkBust()
-				checkBust(player)
 			elif choice == "stay":
 				player.gameOver = True
+
 	#now all the player turns are over so we can deal for dealer
 	while total(dealer) < 17 and !dealer.isBusted:
 		deal(dealer)
-		checkBust(dealer)
+
 	#now dealer has been dealed we check win conditions on each player
 	if dealer.isBusted:
 		#everyone that has not busted wins
