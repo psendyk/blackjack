@@ -1,3 +1,6 @@
+
+from arm_kinematics import *
+
 #dictionary of card names to values
 card_values = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,
 'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace' = [1, 11]} 
@@ -20,8 +23,18 @@ def deal(player, orientation = 'up', fromTable = False):
 
 	#DO KINEMATICS HERE <-------------
 	#pick up card from physical deck
+	#right arm hover over deck
+	#right arm go down to pick up card
+	#succ
+	#right arm comes up with card
 	#get cardValue from computer vision
+	#right arm moves to present card to camera
 	#place down at player + offset
+	#flip card - right and left arms touch tips
+	#left succ
+	#right unsucc
+	#right arm away
+	#left arm moves to some destination and unsucc's
 	cardValue = 0 #replace later with computer vision value
 	player.hand.append(cardValue)
 	checkBust(player)
@@ -90,6 +103,14 @@ def game():
 
 	#now all the player turns are over so we can deal for dealer
 	#flip over face down card
+	#right arm hover over face down card
+	#right arm move down
+	#right succ
+	#right arm up
+	#right left touch tips
+	#swap succ
+	#right arm away
+	#left arm place card down
 	deal(dealer, 'up', True)
 	while total(dealer) < 17 and !dealer.isBusted:
 		deal(dealer)
