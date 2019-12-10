@@ -1,11 +1,16 @@
+#!/usr/bin/env python
 
+
+import sys
+import rospy
 from arm_kinematics import *
 
 #dictionary of card names to values
-card_values = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,
-'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace':[1, 11]} 
+card_values = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace':[1, 11]} 
 #keeps track of total cards drawn
 cards_drawn = 0
+
+robot = None
 
 class Player:
 	#position, hand, offset, gameOver?
@@ -21,19 +26,20 @@ class Player:
 #this will deal a card to player. it appends the card to the player's hand and then checks if they have busted
 #this involves picking up a card, reading it, and placing it by the player
 def deal(player, orientation = 'up'):
+	global cards_drawn
 
 	#DO KINEMATICS HERE <-------------
 	target_position = (player.position, player.offset)
-	pickdeck_look(cards_drawn)
+	robot.pick_look(cards_drawn)
 	#get cardValue from computer vision
 	#cardValue = COMPUTER VISION STUFF0
 	cardValue = 0
 	#if we are dealing facedown, right hand deals
 	if (orientation == 'up'):
-		right_deal(target_position)
-		right_reset()
+		robot.right_deal(target_position)
+		robot.right_reset()
 	else:
-		handoff_deal(target_position)
+		robot.handoff_deal(target_position)
 
 	player.hand.append(cardValue)
 	checkBust(player)
@@ -42,7 +48,7 @@ def deal(player, orientation = 'up'):
 
 #flips over the card on the table that is face down
 def flip():
-	picktable()
+	robot.picktable()
 
 def dealHand(player): #deals 
 	if player.isDealer:
@@ -81,16 +87,19 @@ def blackJack(player):
 			return True
 
 def game():
-	numPlayers = raw_input("Enter how many players are playing: ")
-	dealer = Player(True)
+	numPlayers = int(raw_input("Enter how many players are playing: "))
+	dealer = Player(True, 0)
 	players = []
 	for i in range(numPlayers):
 		players.append(Player(False, i)) #add a new player to players array
+	print("Finished creating players")
 
 	#setup board
 	dealHand(dealer)
+	print("Dealt dealer hand")
 	for player in players:
 		dealHand(player) 
+	print("Finished dealing hands")
 
 	#if blackJack(dealer): #CORNER CASE: if dealer has blackjack immediately
 		#check if players have blackjack
@@ -105,11 +114,14 @@ def game():
 				deal(player)
 			elif choice == "stay":
 				player.gameOver = True
+	print("Finished playing")
 
 	flip()
+	print("Flipped dealer card")
 	while total(dealer) < 17 and not dealer.isBusted:
 		deal(dealer)
 
+	print("Dealer finished playing")
 	#now dealer has been dealed we check win conditions on each player
 	if dealer.isBusted:
 		#everyone that has not busted wins
@@ -129,7 +141,18 @@ def game():
 			else:
 				print("Player loses!")
 				#player loses
+	print("Game over")
 
+def actualGame():
+	while not rospy.is_shutdown():
+		try:
+			game()
+		except Exception as e:
+			print e
+		else:
+			break
 	
 if __name__ == "__main__":
-   game()
+	rospy.init_node('moveit_node')
+	robot = ArmPlanner()
+	actualGame()
