@@ -1,0 +1,9 @@
+<launch>
+  <node pkg="dealplan" type="blackjack.py" name="blackjack" output="screen">
+  </node>
+
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen">
+  <param name="publish_frequency" type="double" value="30.0" />
+  <rosparam param="/source_list"> [/robot/joint_states] </rosparam>
+  </node>
+</launch>
