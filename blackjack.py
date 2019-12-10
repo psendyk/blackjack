@@ -4,6 +4,8 @@ from arm_kinematics import *
 #dictionary of card names to values
 card_values = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,
 'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace' = [1, 11]} 
+#keeps track of total cards drawn
+cards_drawn = 0
 
 class Player:
 	#position, hand, offset, gameOver?
@@ -18,26 +20,28 @@ class Player:
 
 #this will deal a card to player. it appends the card to the player's hand and then checks if they have busted
 #this involves picking up a card, reading it, and placing it by the player
-def deal(player, orientation = 'up', fromTable = False):
-	player.offset += 1
+def deal(player, orientation = 'up'):
 
 	#DO KINEMATICS HERE <-------------
-	#pick up card from physical deck
-	#right arm hover over deck
-	#right arm go down to pick up card
-	#succ
-	#right arm comes up with card
+	target_position = player.position + player.offset
+	pickdeck_look(cards_drawn)
 	#get cardValue from computer vision
-	#right arm moves to present card to camera
-	#place down at player + offset
-	#flip card - right and left arms touch tips
-	#left succ
-	#right unsucc
-	#right arm away
-	#left arm moves to some destination and unsucc's
-	cardValue = 0 #replace later with computer vision value
+	cardValue = COMPUTER VISION STUFF
+	#if we are dealing facedown, right hand deals
+	if (orientation == 'up'):
+		right_deal(player.position + player.offset)
+		right_reset()
+	else:
+		handoff_deal(target_position)
+
 	player.hand.append(cardValue)
 	checkBust(player)
+	player.offset += 1
+	cards_drawn += 1
+
+#flips over the card on the table that is face down
+def flip():
+	picktable()
 
 def dealHand(player): #deals 
     if player.isDealer:
@@ -101,17 +105,7 @@ def game():
 			elif choice == "stay":
 				player.gameOver = True
 
-	#now all the player turns are over so we can deal for dealer
-	#flip over face down card
-	#right arm hover over face down card
-	#right arm move down
-	#right succ
-	#right arm up
-	#right left touch tips
-	#swap succ
-	#right arm away
-	#left arm place card down
-	deal(dealer, 'up', True)
+	flip()
 	while total(dealer) < 17 and !dealer.isBusted:
 		deal(dealer)
 

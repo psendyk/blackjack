@@ -9,9 +9,24 @@ import baxter_interface
 
 #globals
 
+#combines all right arm 
+def pick_look(depthOffset):
+	#pick up card
+	right_over_deck()
+	right_draw_card(depthOffset)
+	right_card_look()
+
+def handoff_deal(target_position):
+	right_handoff()
+	left_pre_handoff()
+	left_handoff()
+	right_reset()
+	left_deal(target_position)
+	left_reset()
 #======================RIGHT ARM==============================
+
 #get right arm out of the way
-def right_away():
+def right_reset():
 	return
 
 #move to slightly above deck, so we dont knock it over
@@ -36,7 +51,7 @@ def right_deal(target_position):
 	
 #======================LEFT ARM==============================
 #move left arm out of the way
-def left_away():
+def left_reset():
 	return
 
 #move into handoff position but slightly farther away so we dont break things
