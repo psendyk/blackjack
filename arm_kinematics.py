@@ -83,7 +83,8 @@ class ArmPlanner(object):
 		right_handoff()
 		left_pre_handoff()
 		left_handoff()
-		right_reset()
+
+		right_over_deck()
 		left_deal(target_position)
 		left_reset()
 
@@ -132,6 +133,14 @@ class ArmPlanner(object):
 
 		rospy.sleep(0.1)
 
+	def setConstr(self, orien_const, right):
+	    constraints = Constraints()
+        constraints.orientation_constraints = orien_const
+
+        if right > 0:
+        	self._groupR.set_path_constraints(constraints)
+        else:
+        	self._groupL.set_path_constraints(constraints)
 
 	#======================RIGHT ARM==============================
 
@@ -141,8 +150,10 @@ class ArmPlanner(object):
 
 	#move to slightly above deck, so we dont knock it over
 	def right_over_deck(self):
-		joints = [TODO]
+		joints = [0.0, -0.06941263065181497, -1.1428156869746333, 1.9370342399023062, -0.01802427425765361, -0.9921020745648913, 0.6764855274574675, 1.035053536625683, -0.49777676566881673, 1.2532623037023831, 1.848830344598895, -0.68568941218478, 0.5629709491539469, -2.244980883070303, 1.440024464627432, -2.700573177072271, -12.565987119160338]
+		joints = joints[10:len(joints)-1]
 
+		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
 
 
@@ -153,38 +164,70 @@ class ArmPlanner(object):
 		goal = currPose
 		goal.pose.position.z = currPose.pose.position.z - depthOffset*CONST
 
+		orien_const = OrientationConstraint()
+	    orien_const.link_name = "right_gripper";
+	    orien_const.header.frame_id = "base";
+	    orien_const.orientation.y = -1.0;
+	    orien_const.absolute_x_axis_tolerance = 0.1;
+	    orien_const.absolute_y_axis_tolerance = 0.1;
+	    orien_const.absolute_z_axis_tolerance = 0.1;
+	    orien_const.weight = 1.0;
+
+		self.setConstr([orien_const], 1)
 		self.plan_and_executeIK(goal, 1)
+		self._gripperR.command_suction(1)
+
 
 		self.right_over_deck()
 
 	#move right arm to look at card
 	def right_card_look(self):
-		joints = [TODO]
+		joints = [0.0, -0.06902913545484361, -1.1424321917776619, 1.936650744705335, -0.018791264651596317, -0.99171857936792, 0.6768690226544388, 1.035053536625683, -0.49854375606275947, 1.7153740160528639, 1.4530633013244583, 0.3643204371227858, -0.18522818013716372, 0.6649806715483269, 1.8752915131899184, -1.3970730025666405, -12.565987119160338]
+		joints = joints[10:len(joints)-1]
 
+		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
 
 	#touch tips to handoff card - require extra function to determine what order to succ/unsucc in
 	#right to left: succ left, then unsucc right; vice versa
 	#for handoff orient grippers so they are parallel to the ground but facing each other
 	def right_handoff(self):
-		return
+		joints = [TODO]
+
+		self.setConstr([], 1)
+		self.plan_and_executeFK(joints, 1)
 
 	def right_deal(self, target_position):
-		
+		joints = [TODO]
+
+		self.setConstr([], 1)
+		self.plan_and_executeFK(joints, 1)
+
+
 	#======================LEFT ARM==============================
 	#move left arm out of the way
 	def left_reset(self):
-		return
+		joints = [TODO]
+
+		self.setConstr([], 0)
+		self.plan_and_executeFK(joints, 0)
 
 	#move into handoff position but slightly farther away so we dont break things
 	def left_pre_handoff(self):
-		return
+		joints = [TODO]
+
+		self.setConstr([], 0)
+		self.plan_and_executeFK(joints, 0)
 
 	#move left arm to touch tips and actually handoff the card
 	def left_handoff(self):
-		return
+		joints = [TODO]
 
-	#deal card, can we make 1 function to do it all?
+		self.setConstr([], 0)
+		self.plan_and_executeFK(joints, 0)
+		self._gripperL.command_suction(1)
+		self._gripperR.stop()
+
 	#should be able to handle placing down the flipped dealer's card as well as dealing cards to players
 	def left_deal(self, target_position):
 		return
