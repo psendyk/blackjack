@@ -10,67 +10,67 @@ import baxter_interface
 #globals
 class ArmPlanner(object):
 	def __init__(self):
-	    """
-	    Constructor.
+		"""
+		Constructor.
 
-	    Inputs:
-	    group_name: the name of the move_group.
-	        For Baxter, this would be 'left_arm' or 'right_arm'
-	        For Sawyer, this would be 'right_arm'
-	    """
+		Inputs:
+		group_name: the name of the move_group.
+			For Baxter, this would be 'left_arm' or 'right_arm'
+			For Sawyer, this would be 'right_arm'
+		"""
 
-	    # If the node is shutdown, call this function    
-	    rospy.on_shutdown(self.shutdown)
+		# If the node is shutdown, call this function    
+		rospy.on_shutdown(self.shutdown)
 
-	    # Initialize moveit_commander
-	    moveit_commander.roscpp_initialize(sys.argv)
+		# Initialize moveit_commander
+		moveit_commander.roscpp_initialize(sys.argv)
 
-	    # Initialize the robot
-	    self._robot = moveit_commander.RobotCommander()
+		# Initialize the robot
+		self._robot = moveit_commander.RobotCommander()
 
-	    # Initialize the planning scene
-	    self._scene = moveit_commander.PlanningSceneInterface()
+		# Initialize the planning scene
+		self._scene = moveit_commander.PlanningSceneInterface()
 
-	    # This publishes updates to the planning scene
-	    self._planning_scene_publisher = rospy.Publisher('/collision_object', CollisionObject, queue_size=10)
+		# This publishes updates to the planning scene
+		self._planning_scene_publisher = rospy.Publisher('/collision_object', CollisionObject, queue_size=10)
 
-	    # Instantiate a move group
-	    self._groupR = moveit_commander.MoveGroupCommander("right_arm")
+		# Instantiate a move group
+		self._groupR = moveit_commander.MoveGroupCommander("right_arm")
 
-	    # Set the maximum time MoveIt will try to plan before giving up
-	    self._groupR.set_planning_time(5)
+		# Set the maximum time MoveIt will try to plan before giving up
+		self._groupR.set_planning_time(5)
 
-	    # Set the bounds of the workspace
-	    self._groupR.set_workspace([-2, -2, -2, 2, 2, 2])
+		# Set the bounds of the workspace
+		self._groupR.set_workspace([-2, -2, -2, 2, 2, 2])
 
-	    self._groupR.allow_replanning(1)
+		self._groupR.allow_replanning(1)
 
-	    # Instantiate a move group
-	    self._groupL = moveit_commander.MoveGroupCommander("left_arm")
+		# Instantiate a move group
+		self._groupL = moveit_commander.MoveGroupCommander("left_arm")
 
-	    # Set the maximum time MoveIt will try to plan before giving up
-	    self._groupL.set_planning_time(5)
+		# Set the maximum time MoveIt will try to plan before giving up
+		self._groupL.set_planning_time(5)
 
-	    # Set the bounds of the workspace
-	    self._groupL.set_workspace([-2, -2, -2, 2, 2, 2])
+		# Set the bounds of the workspace
+		self._groupL.set_workspace([-2, -2, -2, 2, 2, 2])
 
-	    self._groupL.allow_replanning(1)
+		self._groupL.allow_replanning(1)
 
-	    self._gripperR = baxter_interface.gripper.Gripper("right")
-	    self._gripperL = baxter_interface.gripper.Gripper("left")
+		self._gripperR = baxter_interface.gripper.Gripper("right")
+		self._gripperL = baxter_interface.gripper.Gripper("left")
 
-	    # Sleep for a bit to ensure that all inititialization has finished
-	    rospy.sleep(0.5)
+		# Sleep for a bit to ensure that all inititialization has finished
+		rospy.sleep(0.5)
 
-    def shutdown(self):
-        """
-        Code to run on shutdown. This is good practice for safety
+	def shutdown(self):
+		"""
+		Code to run on shutdown. This is good practice for safety
 
-        Currently deletes the object's MoveGroup, so that further commands will do nothing
-        """
-        self._groupR = None
-        self._groupL = None
-        rospy.loginfo("Stopping Path Planner")
+		Currently deletes the object's MoveGroup, so that further commands will do nothing
+		"""
+		self._groupR = None
+		self._groupL = None
+		rospy.loginfo("Stopping Path Planner")
 
 	#combines all right arm 
 	def pick_look(self, depthOffset):
@@ -134,13 +134,13 @@ class ArmPlanner(object):
 		rospy.sleep(0.1)
 
 	def setConstr(self, orien_const, right):
-	    constraints = Constraints()
-        constraints.orientation_constraints = orien_const
+		constraints = Constraints()
+		constraints.orientation_constraints = orien_const
 
-        if right > 0:
-        	self._groupR.set_path_constraints(constraints)
-        else:
-        	self._groupL.set_path_constraints(constraints)
+		if right > 0:
+			self._groupR.set_path_constraints(constraints)
+		else:
+			self._groupL.set_path_constraints(constraints)
 
 	#======================RIGHT ARM==============================
 
@@ -165,13 +165,13 @@ class ArmPlanner(object):
 		goal.pose.position.z = currPose.pose.position.z - depthOffset*CONST
 
 		orien_const = OrientationConstraint()
-	    orien_const.link_name = "right_gripper";
-	    orien_const.header.frame_id = "base";
-	    orien_const.orientation.y = -1.0;
-	    orien_const.absolute_x_axis_tolerance = 0.1;
-	    orien_const.absolute_y_axis_tolerance = 0.1;
-	    orien_const.absolute_z_axis_tolerance = 0.1;
-	    orien_const.weight = 1.0;
+		orien_const.link_name = "right_gripper";
+		orien_const.header.frame_id = "base";
+		orien_const.orientation.y = -1.0;
+		orien_const.absolute_x_axis_tolerance = 0.1;
+		orien_const.absolute_y_axis_tolerance = 0.1;
+		orien_const.absolute_z_axis_tolerance = 0.1;
+		orien_const.weight = 1.0;
 
 		self.setConstr([orien_const], 1)
 		self.plan_and_executeIK(goal, 1)

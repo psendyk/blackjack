@@ -26,7 +26,7 @@ def deal(player, orientation = 'up'):
 	target_position = (player.position, player.offset)
 	pickdeck_look(cards_drawn)
 	#get cardValue from computer vision
-	#cardValue = COMPUTER VISION STUFF
+	#cardValue = COMPUTER VISION STUFF0
 	cardValue = 0
 	#if we are dealing facedown, right hand deals
 	if (orientation == 'up'):
