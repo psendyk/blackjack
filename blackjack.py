@@ -3,7 +3,7 @@ from arm_kinematics import *
 
 #dictionary of card names to values
 card_values = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,
-'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace' = [1, 11]} 
+'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace':[1, 11]} 
 #keeps track of total cards drawn
 cards_drawn = 0
 
@@ -23,13 +23,14 @@ class Player:
 def deal(player, orientation = 'up'):
 
 	#DO KINEMATICS HERE <-------------
-	target_position = player.position + player.offset
+	target_position = (player.position, player.offset)
 	pickdeck_look(cards_drawn)
 	#get cardValue from computer vision
-	cardValue = COMPUTER VISION STUFF
+	#cardValue = COMPUTER VISION STUFF
+	cardValue = 0
 	#if we are dealing facedown, right hand deals
 	if (orientation == 'up'):
-		right_deal(player.position + player.offset)
+		right_deal(target_position)
 		right_reset()
 	else:
 		handoff_deal(target_position)
@@ -44,18 +45,18 @@ def flip():
 	picktable()
 
 def dealHand(player): #deals 
-    if player.isDealer:
-    	deal(player, 'down')
+	if player.isDealer:
+		deal(player, 'down')
 	else:
 		deal(player)
-	deal(player)	    
+	deal(player)        
 
 def total(player): #add up all cards in player's hand and return value
-    total = 0
-    aceCount = 0 	
-    for card in player.hand:
-    	if card != 'ace':
-    		total += cardValues[card]
+	total = 0
+	aceCount = 0    
+	for card in player.hand:
+		if card != 'ace':
+			total += cardValues[card]
 		else:
 			aceCount += 1
 	#run through twice
@@ -91,14 +92,14 @@ def game():
 	for player in players:
 		dealHand(player) 
 
-	if blackJack(dealer): #CORNER CASE: if dealer has blackjack immediately
+	#if blackJack(dealer): #CORNER CASE: if dealer has blackjack immediately
 		#check if players have blackjack
 	
 	for player in players:
 		if blackJack(player):
 			player.blackJack = True
 			player.gameOver = True
-		while !player.gameOver #while the player hasnt either busted or quit
+		while not player.gameOver: #while the player hasnt either busted or quit
 			choice = raw_input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower() #convert to computer vision
 			if choice == "hit":
 				deal(player)
@@ -106,14 +107,14 @@ def game():
 				player.gameOver = True
 
 	flip()
-	while total(dealer) < 17 and !dealer.isBusted:
+	while total(dealer) < 17 and not dealer.isBusted:
 		deal(dealer)
 
 	#now dealer has been dealed we check win conditions on each player
 	if dealer.isBusted:
 		#everyone that has not busted wins
 		for player in players:
-			if !player.isBusted:
+			if not player.isBusted:
 				#player wins
 				print("Congratulations player " + str(player.position))
 			else:
@@ -122,9 +123,11 @@ def game():
 	else:
 		#everyone that has not busted and has a value greater than the dealer's wins 
 		for player in players:
-			if (!player.isBusted and total(player) > total(dealer)) or player.blackjack:
+			if (not player.isBusted and total(player) > total(dealer)) or player.blackjack:
+				print("Player won!")
 				#player wins
 			else:
+				print("Player loses!")
 				#player loses
 
 	
