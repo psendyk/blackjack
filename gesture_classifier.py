@@ -63,8 +63,9 @@ class GestureClassifier():
         return self.model.predict(X)
 
     ### Helpers for image processing ###    
-
-    def crop(self, imgs, size=None, shift=(0,0)):
+    
+    @staticmethod
+    def crop(imgs, size=None, shift=(0,0)):
         if size is None:
             size = int(imgs.shape[1]), int(imgs.shape[2])
         h, w = size
@@ -76,7 +77,8 @@ class GestureClassifier():
 	    imgs_crop[i] = img[y0:y0+h, x0:x0+w]
         return imgs_crop
 
-    def threshold(self, imgs, thres=160):
+    @staticmethod
+    def threshold(imgs, thres=160):
         imgs_thres = np.zeros(imgs.shape)
         for i, img in enumerate(imgs):
             idx = np.where(img > thres)
@@ -84,7 +86,8 @@ class GestureClassifier():
             imgs_thres[i][idx] = 1
         return imgs_thres
 
-    def preprocess(self, imgs, size=(240, 360), shift=(20,0), thres=160):
+    @staticmethod
+    def preprocess(imgs, size=(240, 360), shift=(20,0), thres=160):
         imgs = self.crop(imgs, size=size, shift=shift)
         imgs = self.threshold(imgs, thres=thres)
         return imgs
