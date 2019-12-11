@@ -186,7 +186,7 @@ class ArmPlanner(object):
 		self._gripperR.command_suction()
 		# TODO: try again
 
-		print("hover done")
+		print("Right_Pick finished")
 
 	#move to slightly above deck, so we dont knock it over
 	def right_over_deck(self):
@@ -196,7 +196,7 @@ class ArmPlanner(object):
 
 		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
-		print("hover done")
+		print("Right_Over_Deck finished")
 
 
 	#move down and pick up card from the right_over_deck position
@@ -235,7 +235,7 @@ class ArmPlanner(object):
 
 		self.right_over_deck()
 
-		print("card drawn")
+		print("Right_Draw_Card finished")
 
 	#move right arm to look at card
 	def right_card_look(self):
@@ -246,7 +246,7 @@ class ArmPlanner(object):
 		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
 
-		print("card seen")
+		print("Right_Card_Look finished")
 
 		
 	def right_handoff(self):
@@ -283,7 +283,7 @@ class ArmPlanner(object):
 
 		self.setConstr([], 0)
 		self.plan_and_executeFK(joints, 0)
-		print("left left_pre_handoff")
+		print("Left_Pre_Handoff finished")
 
 	#move left arm to touch tips and actually handoff the card
 	def left_handoff(self):
@@ -295,7 +295,7 @@ class ArmPlanner(object):
 		self.plan_and_executeFK(joints, 0)
 		self._gripperR.stop()
 		self._gripperL.command_suction(0, 2)
-		print("card handoff")
+		print("Left_Handoff finished")
 
 
 	def left_deal(self, target_position):
@@ -307,15 +307,19 @@ class ArmPlanner(object):
 		k2 = 0.01 #constant for playerOffset
 		#keep a static pose that is the default position and then we can edit that position everytime
 		#first case default pos
-		self.setConstr([], 0)
-		self.plan_and_executeFK(joints, 0)
-		#else
-		goal = self._groupL.get_current_pose()
-		#set this new pose to be equal to the default position
-		goal.pose.position.y = goal.pose.position.y - 0.001 - k1*playerNum - k2*playerOffset 
-		#not sure if y axis 
-		# self.setConstr([], 0)
-		# self.plan_and_executeIK(goal, 0)
+		if (playerNum == -1):
+			print("Left dealing to dealer")
+		else:
+			print("Left dealing to player " + str(playerNum))
+			self.setConstr([], 0)
+			self.plan_and_executeFK(joints, 0)
+			#else
+			goal = self._groupL.get_current_pose()
+			#set this new pose to be equal to the default position
+			goal.pose.position.y = goal.pose.position.y - 0.001 - k1*playerNum - k2*playerOffset 
+			#not sure if y axis 
+			# self.setConstr([], 0)
+			# self.plan_and_executeIK(goal, 0)
 
 
 		self._gripperL.stop()
