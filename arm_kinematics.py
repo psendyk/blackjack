@@ -297,6 +297,24 @@ class ArmPlanner(object):
 
 
 	def left_deal(self, target_position):
+		playerNum = target_position[0]
+		playerOffset = target_position[1]
+		k1 = 0 #fill this in later constant for playerNum
+		k2 = 0 #constant for playerOffset
+		if playerNum == 0: #this means we are dealing to the dealer
+			#we need a default pose for dealer too and then just increment that by a little every time
+			print("todo")
+
+		else:
+			#keep a static pose that is the default position and then we can edit that position everytime
+			goal = PoseStamped() 
+			#set this new pose to be equal to the default position
+			goal.pose.position.y = currPose.pose.position.y - 0.001 - k1*playerNum - k2*playerOffset 
+			#not sure if y axis 
+			self.setConstr([], -1)
+			self.plan_and_executeIK(goal, -1)
+
+
 		self._gripperL.stop()
 		return
 
