@@ -182,6 +182,7 @@ class ArmPlanner(object):
 		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
 		self._gripperR.command_suction()
+		# TODO: try again
 
 		print("hover done")
 
