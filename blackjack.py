@@ -6,7 +6,8 @@ import rospy
 from arm_kinematics import *
 
 #dictionary of card names to values
-card_values = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace':[1, 11]} 
+cardValues = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace':[1, 11]} 
+tenCards = ['ten', 'jack', 'queen', 'king']
 #keeps track of total cards drawn
 cards_drawn = 0
 
@@ -33,29 +34,34 @@ def deal(player, orientation = 'up'):
 	robot.pick_look(cards_drawn)
 	#get cardValue from computer vision
 	#cardValue = COMPUTER VISION STUFF0
-	cardValue = 0
+	cardValue = 'one'
 	#if we are dealing facedown, right hand deals
-	if (orientation == 'up'):
-		robot.right_deal(target_position)
-		robot.right_reset()
+	if (orientation == 'down'):
+		robot.right_deal()
 	else:
 		robot.handoff_deal(target_position)
-
+	print("deal")
 	player.hand.append(cardValue)
+	print("appended to hand")
 	checkBust(player)
+	print("checked bust")
 	player.offset += 1
 	cards_drawn += 1
+	print('finish deal')
 
 #flips over the card on the table that is face down
 def flip():
-	robot.picktable()
+	robot.pick_table()
 
 def dealHand(player): #deals 
 	if player.isDealer:
 		deal(player, 'down')
 	else:
 		deal(player)
-	deal(player)        
+	flip()
+	print("dealt first card")
+	deal(player)
+	print("dealt second card")        
 
 def total(player): #add up all cards in player's hand and return value
 	total = 0
@@ -75,16 +81,21 @@ def total(player): #add up all cards in player's hand and return value
 		return totalLow
 	else:
 		return totalHigh
+	print("total works")
 
 def checkBust(player):
 	if total(player) > 21:
 		player.isBusted = True
 		player.gameOver = True
+		print("game over")
+	print("Check bust worked")
 
 def blackJack(player):
-	if ace in player.hand:
-		if faceCard or 10 in player.hand:
-			return True
+	if 'ace' in player.hand:
+		for card in tenCards:
+			if card in player.hand:
+				return True
+	return False
 
 def game():
 	numPlayers = int(raw_input("Enter how many players are playing: "))
@@ -109,10 +120,10 @@ def game():
 			player.blackJack = True
 			player.gameOver = True
 		while not player.gameOver: #while the player hasnt either busted or quit
-			choice = raw_input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower() #convert to computer vision
+			choice = raw_input("Do you want to 'hit' or 'stand'").lower() #convert to computer vision
 			if choice == "hit":
 				deal(player)
-			elif choice == "stay":
+			elif choice == "stand":
 				player.gameOver = True
 	print("Finished playing")
 
@@ -150,6 +161,7 @@ def actualGame():
 	while not rospy.is_shutdown():
 		try:
 			game()
+			robot.shutdown()
 		except Exception as e:
 			print e
 		else:
