@@ -31,7 +31,7 @@ def deal(player, orientation = 'up'):
 
 	#DO KINEMATICS HERE <-------------
 	target_position = (player.position, player.offset)
-	print("Dealing to player " + str(target_position[0]) + " at offset " + str(target_position[1]))
+	print("BLACKJACK Dealing to player " + str(target_position[0]) + " at offset " + str(target_position[1]))
 	robot.pick_look(cards_drawn)
 	#get cardValue from computer vision
 	#cardValue = COMPUTER VISION STUFF0

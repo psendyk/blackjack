@@ -264,7 +264,7 @@ class ArmPlanner(object):
 		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
 
-		self._gripperR.set_blow_off(0.5)
+		self._gripperR.set_blow_off(0.1)
 		self._gripperR.stop()
 
 
@@ -293,6 +293,7 @@ class ArmPlanner(object):
 
 		self.setConstr([], 0)
 		self.plan_and_executeFK(joints, 0)
+		self._gripperR.set_blow_off(0.01)
 		self._gripperR.stop()
 		self._gripperL.command_suction(0, 2)
 		print("Left_Handoff finished")
