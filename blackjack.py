@@ -58,7 +58,6 @@ def dealHand(player): #deals
 		deal(player, 'down')
 	else:
 		deal(player)
-	flip()
 	print("dealt first card")
 	deal(player)
 	print("dealt second card")        
