@@ -144,6 +144,9 @@ def game():
 	print("Game over")
 
 def actualGame():
+	global robot
+	rospy.init_node('moveit_node')
+	robot = ArmPlanner()
 	while not rospy.is_shutdown():
 		try:
 			game()
@@ -153,6 +156,4 @@ def actualGame():
 			break
 	
 if __name__ == "__main__":
-	rospy.init_node('moveit_node')
-	robot = ArmPlanner()
 	actualGame()
