@@ -55,10 +55,13 @@ class ArmPlanner(object):
 		self._gripperR = baxter_interface.gripper.Gripper("right")
 		self._gripperL = baxter_interface.gripper.Gripper("left")
 
-		self._groupR.set_goal_position_tolerance(0.001)
-		self._groupR.set_goal_orientation_tolerance(0.01)
-		self._groupR.set_goal_joint_tolerance(0.001)
-		self._groupL.set_goal_position_tolerance(0.001)
+		self._group = moveit_commander.MoveGroupCommander("both_arms")
+		print(self._group.get_joints())
+
+		# self._groupR.set_goal_position_tolerance(0.001)
+		# self._groupR.set_goal_orientation_tolerance(0.01)
+		# self._groupR.set_goal_joint_tolerance(0.001)
+		# self._groupL.set_goal_position_tolerance(0.001)
 
 		# Sleep for a bit to ensure that all inititialization has finished
 		rospy.sleep(0.5)
@@ -71,6 +74,7 @@ class ArmPlanner(object):
 		"""
 		self._groupR = None
 		self._groupL = None
+		self._group = None
 		rospy.loginfo("Stopping Path Planner")
 
 	#combines all right arm 
@@ -81,9 +85,10 @@ class ArmPlanner(object):
 		# self.right_card_look()
 
 	def handoff_deal(self, target_position):
-		self.right_handoff()
-		self.left_pre_handoff()
-		self.left_handoff()
+		# self.right_handoff()
+		# self.left_pre_handoff()
+		# self.left_handoff()
+		self.handoff()
 
 		self.right_over_deck()
 		self.left_deal(target_position)
@@ -179,8 +184,9 @@ class ArmPlanner(object):
 		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
 		self._gripperR.command_suction()
+		# TODO: try again
 
-		print("hover done")
+		print("Right_Pick finished")
 
 	#move to slightly above deck, so we dont knock it over
 	def right_over_deck(self):
@@ -190,7 +196,7 @@ class ArmPlanner(object):
 
 		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
-		print("hover done")
+		print("Right_Over_Deck finished")
 
 
 	#move down and pick up card from the right_over_deck position
@@ -198,7 +204,7 @@ class ArmPlanner(object):
 		#fix so abort during execution retries until card attached
 		currPose = self._groupR.get_current_pose()
 
-		print("Pose retrieved")
+		# print("Pose retrieved")
 		# print(currPose)
 
 		goal = currPose
@@ -216,15 +222,20 @@ class ArmPlanner(object):
 		self.setConstr([orien_const], 1)
 		self.plan_and_executeIK(goal, 1)
 
-		self._gripperR.set_vacuum_threshold(0.5)
-		# TODO: make sure card attached
-		self._gripperR.command_suction()
+		self._gripperR.set_vacuum_threshold(50)
+		# make sure card attached
+		attached = self._gripperR.command_suction(1, 2)
+		print(attached)
+
+		while not attached:
+			self.plan_and_executeIK(goal, 1)
+			attached = self._gripperR.command_suction(1, 2)
 
 		rospy.sleep(0.5)
 
 		self.right_over_deck()
 
-		print("card drawn")
+		print("Right_Draw_Card finished")
 
 	#move right arm to look at card
 	def right_card_look(self):
@@ -235,13 +246,9 @@ class ArmPlanner(object):
 		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
 
-		print("card seen")
+		print("Right_Card_Look finished")
 
 		
-
-	#touch tips to handoff card - require extra function to determine what order to succ/unsucc in
-	#right to left: succ left, then unsucc right; vice versa
-	#for handoff orient grippers so they are parallel to the ground but facing each other
 	def right_handoff(self):
 		joints = [0.0, -0.08015049616701286, -1.153553552489831, 1.1961215193536514, 1.1919030721869666, 1.0465583925348236, -2.6775634652539897, -1.545102148597583, -0.9046651696554228, 2.6123692817688595, 0.9334273094282742, 0.9909515889739773, 0.7773447642609335, -1.744903146219658, 1.6900633330527546, -1.8710730660232333, -12.565987119160338]
 		joints = self.formatJoints(joints)
@@ -257,7 +264,7 @@ class ArmPlanner(object):
 		self.setConstr([], 1)
 		self.plan_and_executeFK(joints, 1)
 
-		self._gripperR.set_blow_off(0.5)
+		self._gripperR.set_blow_off(0.1)
 		self._gripperR.stop()
 
 
@@ -276,7 +283,7 @@ class ArmPlanner(object):
 
 		self.setConstr([], 0)
 		self.plan_and_executeFK(joints, 0)
-		print("left left_pre_handoff")
+		print("Left_Pre_Handoff finished")
 
 	#move left arm to touch tips and actually handoff the card
 	def left_handoff(self):
@@ -286,11 +293,62 @@ class ArmPlanner(object):
 
 		self.setConstr([], 0)
 		self.plan_and_executeFK(joints, 0)
+		self._gripperR.set_blow_off(0.01)
 		self._gripperR.stop()
-		self._gripperL.command_suction(1)
-		print("card handoff")
+		self._gripperL.command_suction(0, 2)
+		print("Left_Handoff finished")
 
 
 	def left_deal(self, target_position):
+		joints = [0.0, -0.13000487177328882, -0.045252433242619704, -0.04947088040930459, -1.207626375262792, 0.30871363356193954, 0.11236409271260656, 1.3058011456874585, -0.3144660615165098, 2.482364409995571, 2.0490148374179413, -0.5273058958356109, 0.04065049087896346, -1.1025486912926412, 2.0685730924634806, -3.056840215058658, -12.565987119160338]
+		joints = self.formatJoints(joints,0)
+		playerNum = target_position[0]
+		playerOffset = target_position[1]
+		k1 = 0.01 #fill this in later constant for playerNum
+		k2 = 0.01 #constant for playerOffset
+		#keep a static pose that is the default position and then we can edit that position everytime
+		#first case default pos
+		if (playerNum == -1):
+			print("Left dealing to dealer")
+		else:
+			print("Left dealing to player " + str(playerNum))
+			self.setConstr([], 0)
+			self.plan_and_executeFK(joints, 0)
+			#else
+			goal = self._groupL.get_current_pose()
+			#set this new pose to be equal to the default position
+			goal.pose.position.y = goal.pose.position.y - 0.001 - k1*playerNum - k2*playerOffset 
+			#not sure if y axis 
+			# self.setConstr([], 0)
+			# self.plan_and_executeIK(goal, 0)
+
+
 		self._gripperL.stop()
 		return
+
+	#======================BOTH ARMS==============================
+
+	def handoff(self):
+		jointsL = [0.0, -0.08091748656095557, -1.1604564660353156, 1.2294856014901592, 1.410495334460638, 1.0465583925348236, -2.4677915925106593, -1.5650438988400934, -0.9809807138527221, 2.611602291374917, 0.934194299822217, 0.9901845985800346, 0.7777282594579048, -1.7452866414166295, 1.690446828249726, -1.870689570826262, -12.565987119160338]
+		jointsL = self.formatJoints(jointsL, 0)
+		jointsR = [0.0, -0.08015049616701286, -1.153553552489831, 1.1961215193536514, 1.1919030721869666, 1.0465583925348236, -2.6775634652539897, -1.545102148597583, -0.9046651696554228, 2.6123692817688595, 0.9334273094282742, 0.9909515889739773, 0.7773447642609335, -1.744903146219658, 1.6900633330527546, -1.8710730660232333, -12.565987119160338]
+		jointsR = self.formatJoints(jointsR)
+		# concat to set joints for simutaneous motion
+		# TODO
+		jointDict = {}
+		j = self._group.get_joints()
+		# print(joints)
+		for index, jo in enumerate(j):
+			print(str(index) + ", " + str(jo))
+		for index in range(1,8):
+			jointDict[j[index]] = jointsL[index - 1]
+		for index in range(12,19):
+			jointDict[j[index]] = jointsR[index - 12]
+
+		self._group.set_joint_value_target(jointDict)
+		self._group.set_start_state_to_current_state()
+
+		plan = self._group.plan()
+		self._group.execute(plan)
+
+		self.left_handoff()

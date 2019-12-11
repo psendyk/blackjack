@@ -31,6 +31,7 @@ def deal(player, orientation = 'up'):
 
 	#DO KINEMATICS HERE <-------------
 	target_position = (player.position, player.offset)
+	print("BLACKJACK Dealing to player " + str(target_position[0]) + " at offset " + str(target_position[1]))
 	robot.pick_look(cards_drawn)
 	#get cardValue from computer vision
 	#cardValue = COMPUTER VISION STUFF0
@@ -40,14 +41,13 @@ def deal(player, orientation = 'up'):
 		robot.right_deal()
 	else:
 		robot.handoff_deal(target_position)
-	print("deal")
 	player.hand.append(cardValue)
-	print("appended to hand")
+	print("BLACKJACK appended to hand")
 	checkBust(player)
-	print("checked bust")
+	print("BLACKJACK checked bust")
 	player.offset += 1
 	cards_drawn += 1
-	print('finish deal')
+	print('BLACKJACK Finished deal to player ' + str(target_position[0]))
 
 #flips over the card on the table that is face down
 def flip():
@@ -58,10 +58,9 @@ def dealHand(player): #deals
 		deal(player, 'down')
 	else:
 		deal(player)
-	flip()
-	print("dealt first card")
+	print("BLACKJACK Successfully dealt first card to player " + str(player.position))
 	deal(player)
-	print("dealt second card")        
+	print("BLACKJACK Successfully dealt second card to player " + str(player.position))        
 
 def total(player): #add up all cards in player's hand and return value
 	total = 0
@@ -81,14 +80,13 @@ def total(player): #add up all cards in player's hand and return value
 		return totalLow
 	else:
 		return totalHigh
-	print("total works")
+	print("BLACKJACK Total computed for player " + str(player.position))
 
 def checkBust(player):
 	if total(player) > 21:
 		player.isBusted = True
 		player.gameOver = True
 		print("game over")
-	print("Check bust worked")
 
 def blackJack(player):
 	if 'ace' in player.hand:
@@ -99,18 +97,20 @@ def blackJack(player):
 
 def game():
 	numPlayers = int(raw_input("Enter how many players are playing: "))
-	dealer = Player(True, 0)
+	dealer = Player(True, -1)
 	players = []
+	print("BLACKJACK Creating players")
 	for i in range(numPlayers):
 		players.append(Player(False, i)) #add a new player to players array
-	print("Finished creating players")
+		print("BLACKJACK Appended player " + players[i].position)
+	print("BLACKJACK Finished creating players")
 
 	#setup board
 	dealHand(dealer)
-	print("Dealt dealer hand")
+	print("BLACKJACK Finished dealing dealer hand")
 	for player in players:
 		dealHand(player) 
-	print("Finished dealing hands")
+	print("BLACKJACK Finished dealing hands for all players")
 
 	#if blackJack(dealer): #CORNER CASE: if dealer has blackjack immediately
 		#check if players have blackjack
@@ -119,20 +119,20 @@ def game():
 		if blackJack(player):
 			player.blackJack = True
 			player.gameOver = True
-		while not player.gameOver: #while the player hasnt either busted or quit
+		while not player.gameOver: #while the player hasnt busted
 			choice = raw_input("Do you want to 'hit' or 'stand'").lower() #convert to computer vision
 			if choice == "hit":
 				deal(player)
 			elif choice == "stand":
 				player.gameOver = True
-	print("Finished playing")
+	print("BLACKJACK Finished playing for all players")
 
 	flip()
-	print("Flipped dealer card")
+	print("BLACKJACK Flipped dealer card")
 	while total(dealer) < 17 and not dealer.isBusted:
 		deal(dealer)
 
-	print("Dealer finished playing")
+	print("BLACKJACK Dealer finished playing")
 	#now dealer has been dealed we check win conditions on each player
 	if dealer.isBusted:
 		#everyone that has not busted wins
@@ -144,20 +144,24 @@ def game():
 				#player loses
 				print("You lost " + str(player.position))
 	else:
-		#everyone that has not busted and has a value greater than the dealer's wins 
+		#everyone that has not busted and has a value greater than the dealer's wins or if they have blackjack
 		for player in players:
-			if (not player.isBusted and total(player) > total(dealer)) or player.blackjack:
-				print("Player won!")
+			if ((not player.isBusted) and (total(player) > total(dealer))) or player.blackjack:
+				print("Congratulations player " + str(player.position))
 				#player wins
 			else:
-				print("Player loses!")
+				print("You lost " + str(player.position))
 				#player loses
-	print("Game over")
+	print("BLACKJACK Game over")
+	choice = raw_input("Do you want to play again?'").lower()
+	if choice == 'yes':
+		actualGame()
 
 def actualGame():
-	global robot
+	global robot, cards_drawn
 	rospy.init_node('moveit_node')
 	robot = ArmPlanner()
+	cards_drawn = 0
 	while not rospy.is_shutdown():
 		try:
 			game()
