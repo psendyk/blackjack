@@ -308,6 +308,17 @@ class ArmPlanner(object):
 		k2 = 0.01 #constant for playerOffset
 		#keep a static pose that is the default position and then we can edit that position everytime
 		#first case default pos
+<<<<<<< HEAD
+		self.setConstr([], 0)
+		self.plan_and_executeFK(joints, 0)
+		#else
+		goal = self._groupL.get_current_pose()
+		#set this new pose to be equal to the default position
+		goal.pose.position.y = goal.pose.position.y - 0.001 - k1*playerNum - k2*playerOffset 
+		#not sure if y axis 
+		# self.setConstr([], 0)
+		# self.plan_and_executeIK(goal, 0)
+=======
 		if (playerNum == -1):
 			print("Left dealing to dealer")
 		else:
@@ -321,6 +332,7 @@ class ArmPlanner(object):
 			#not sure if y axis 
 			# self.setConstr([], 0)
 			# self.plan_and_executeIK(goal, 0)
+>>>>>>> a6b73d4f6631a31780db715cfaf8c3b42aebee0c
 
 
 		self._gripperL.stop()
