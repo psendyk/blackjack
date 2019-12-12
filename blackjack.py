@@ -40,6 +40,7 @@ def send_image(path):
     pub.publish(msg)
     # Sleep to allow for image to be published.
     #rospy.sleep(1) #TODO not sure if we need this
+    print("BLACKJACK successfully sent image")
 
 #this will deal a card to player. it appends the card to the player's hand and then checks if they have busted
 #this involves picking up a card, reading it, and placing it by the player
