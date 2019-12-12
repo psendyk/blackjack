@@ -28,6 +28,19 @@ class Player:
 		self.offset = 0 #measures how far over the cards need to be dealt each time
 		self.position = position #position of where the player's are physically
 
+def send_image(path):
+    """
+    Send the image located at the specified path to the head
+    display on Baxter.
+    @param path: path to the image file to load and send
+    """
+    img = cv2.imread(path)
+    msg = cv_bridge.CvBridge().cv2_to_imgmsg(img, encoding="bgr8")
+    pub = rospy.Publisher('/robot/xdisplay', Image, latch=True, queue_size=1)
+    pub.publish(msg)
+    # Sleep to allow for image to be published.
+    #rospy.sleep(1) #TODO not sure if we need this
+
 #this will deal a card to player. it appends the card to the player's hand and then checks if they have busted
 #this involves picking up a card, reading it, and placing it by the player
 def deal(player, orientation = 'up'):
@@ -46,9 +59,9 @@ def deal(player, orientation = 'up'):
 	else:
 		robot.handoff_deal(target_position)
 	player.hand.append(cardValue)
-	print("BLACKJACK appended to hand")
+	print("BLACKJACK Successfully appended to player " + str(player.position) + "'s hand")
 	checkBust(player)
-	print("BLACKJACK checked bust")
+	print("BLACKJACK Sucessfully checked bust of player " + str(player.position))
 	player.offset += 1
 	cards_drawn += 1
 
@@ -96,6 +109,7 @@ def blackJack(player):
 	return False
 
 def game():
+	send_image() #TODO ADD IMAGE PATH FOR WELCOME
 	numPlayers = int(raw_input("Enter how many players are playing: "))
 	dealer = Player(True, -1)
 	players = []
@@ -106,6 +120,7 @@ def game():
 
 	#setup board
 	dealHand(dealer)
+	send_image() #TODO ADD IMAGE PATH FOR DEAL TO DEALER
 	print("BLACKJACK Finished dealing dealer hand")
 	print("Dealer " + str(dealer.position) + " has a hand of " + str(dealer.hand))
 	for player in players:
