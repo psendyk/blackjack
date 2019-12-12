@@ -4,6 +4,7 @@
 import sys
 import rospy
 from arm_kinematics import *
+from gesture_classifier import GestureClassifier
 
 #dictionary of card names to values
 cardValues = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace':[1, 11]} 
@@ -31,7 +32,6 @@ def deal(player, orientation = 'up'):
 
 	#DO KINEMATICS HERE <-------------
 	target_position = (player.position, player.offset)
-	print("BLACKJACK Dealing to player " + str(target_position[0]) + " at offset " + str(target_position[1]))
 	robot.pick_look(cards_drawn)
 	#get cardValue from computer vision
 	#cardValue = COMPUTER VISION STUFF0
@@ -47,7 +47,6 @@ def deal(player, orientation = 'up'):
 	print("BLACKJACK checked bust")
 	player.offset += 1
 	cards_drawn += 1
-	print('BLACKJACK Finished deal to player ' + str(target_position[0]))
 
 #flips over the card on the table that is face down
 def flip():
@@ -58,9 +57,7 @@ def dealHand(player): #deals
 		deal(player, 'down')
 	else:
 		deal(player)
-	print("BLACKJACK Successfully dealt first card to player " + str(player.position))
 	deal(player)
-	print("BLACKJACK Successfully dealt second card to player " + str(player.position))        
 
 def total(player): #add up all cards in player's hand and return value
 	total = 0
@@ -80,7 +77,6 @@ def total(player): #add up all cards in player's hand and return value
 		return totalLow
 	else:
 		return totalHigh
-	print("BLACKJACK Total computed for player " + str(player.position))
 
 def checkBust(player):
 	if total(player) > 21:
@@ -102,7 +98,6 @@ def game():
 	print("BLACKJACK Creating players")
 	for i in range(numPlayers):
 		players.append(Player(False, i)) #add a new player to players array
-		print("BLACKJACK Appended player " + players[i].position)
 	print("BLACKJACK Finished creating players")
 
 	#setup board
@@ -120,10 +115,12 @@ def game():
 			player.blackJack = True
 			player.gameOver = True
 		while not player.gameOver: #while the player hasnt busted
-			choice = raw_input("Do you want to 'hit' or 'stand'").lower() #convert to computer vision
+			# choice = raw_input("Do you want to 'hit' or 'stand'").lower() #convert to computer vision
+			choice = cls.recognize()
+			print(choice)
 			if choice == "hit":
 				deal(player)
-			elif choice == "stand":
+			elif choice == "stay":
 				player.gameOver = True
 	print("BLACKJACK Finished playing for all players")
 
@@ -158,10 +155,11 @@ def game():
 		actualGame()
 
 def actualGame():
-	global robot, cards_drawn
+	global robot, cards_drawn, cls
 	rospy.init_node('moveit_node')
 	robot = ArmPlanner()
 	cards_drawn = 0
+	cls = GestureClassifier()
 	while not rospy.is_shutdown():
 		try:
 			game()
