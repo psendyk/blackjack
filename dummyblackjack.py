@@ -2,20 +2,14 @@
 
 
 import sys
-import rospy
-from arm_kinematics import *
-from gesture_classifier import GestureClassifier
-
+import random
 #dictionary of card names to values
 cardValues = {'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9,'ten':10, 'jack':10, 'queen':10, 'king':10, 'ace':[1, 11]} 
 tenCards = ['ten', 'jack', 'queen', 'king']
 #keeps track of total cards drawn
 cards_drawn = 0
+tempDeck = ['ace', 'ten', 'queen', 'ace', 'jack', 'ace', 'eight', 'nine', 'two', 'ace', 'king', 'eight']
 
-#HARDCODED DECK
-tempDeck = ['one', 'two', 'six', 'queen', 'three', 'eight', 'nine', 'two', 'ace', 'king', 'eight']
-
-robot = None
 
 class Player:
 	#position, hand, offset, gameOver?
@@ -35,16 +29,15 @@ def deal(player, orientation = 'up'):
 
 	#DO KINEMATICS HERE <-------------
 	target_position = (player.position, player.offset)
-	robot.pick_look(cards_drawn)
+	print("ROBOT")
 	#get cardValue from computer vision
-	#cardValue = COMPUTER VISION STUFF0
-	#HARDCODED CHANGE LATER
+	#cardValue = COMPUTER VISION STUFF
 	cardValue = tempDeck.pop(0)
 	#if we are dealing facedown, right hand deals
 	if (orientation == 'down'):
-		robot.right_deal()
+		print("ROBOT")
 	else:
-		robot.handoff_deal(target_position)
+		print("ROBOT")
 	player.hand.append(cardValue)
 	print("BLACKJACK appended to hand")
 	checkBust(player)
@@ -54,7 +47,7 @@ def deal(player, orientation = 'up'):
 
 #flips over the card on the table that is face down
 def flip():
-	robot.pick_table()
+	print("ROBOT")
 
 def dealHand(player): #deals 
 	if player.isDealer:
@@ -96,7 +89,7 @@ def blackJack(player):
 	return False
 
 def game():
-	numPlayers = int(raw_input("Enter how many players are playing: "))
+	numPlayers = int(input("Enter how many players are playing: "))
 	dealer = Player(True, -1)
 	players = []
 	print("BLACKJACK Creating players")
@@ -107,13 +100,11 @@ def game():
 	#setup board
 	dealHand(dealer)
 	print("BLACKJACK Finished dealing dealer hand")
-	print("Dealer " + str(dealer.position) + " has a hand of " + str(dealer.hand))
-	for player in players:
-		dealHand(player) 
-	print("BLACKJACK Finished dealing hands for all players")	
+	print("Dealer " + str(dealer.position) + " has a hand of " + str(dealer.hand))	
 	for player in players:
 		dealHand(player) 
 		print("Player " + str(player.position) + " has a hand of " + str(player.hand))
+	print("BLACKJACK Finished dealing hands for all players")
 
 	if blackJack(dealer): #CORNER CASE: if dealer has blackjack immediately
 		print("Dealer has blackjack")
@@ -122,24 +113,22 @@ def game():
 				print("Congratulations player " + str(player.position))
 			else:
 				print("You lost player " + str(player.position))
+		#check if players have blackjack
 	else:
 		for player in players:
-			print("It is player " + str(player.position) + "'s turn")
-			print("Player " + str(player.position) + " has a hand of " + str(player.hand) + " for a total of " + str(total(player)))
 			if blackJack(player):
 				player.blackJack = True
 				player.gameOver = True
 			while not player.gameOver: #while the player hasnt busted
-				# choice = raw_input("Do you want to 'hit' or 'stay'").lower() #convert to computer vision
-				choice = cls.recognize()
+				choice = input("Do you want to 'hit' or 'stand' player " + str(player.position)).lower() #convert to computer vision
+				#choice = cls.recognize()
 				print(choice)
 				if choice == "hit":
 					deal(player)
 					print("Dealt " + str(player.hand[-1]))
 					print("Player " + str(player.position) + " has a hand of " + str(player.hand) + " for a total of " + str(total(player)))
-				elif choice == "stay":
+				elif choice == "stand":
 					player.gameOver = True
-
 		print("BLACKJACK Finished playing for all players")
 
 		flip()
@@ -148,7 +137,6 @@ def game():
 			deal(dealer)
 			print("Dealt " + str(dealer.hand[-1]))
 		print("Dealer " + str(dealer.position) + " has a hand of " + str(dealer.hand) + " for a total of " + str(total(dealer)))		
-
 		print("BLACKJACK Dealer finished playing")
 		#now dealer has been dealed we check win conditions on each player
 		if dealer.isBusted:
@@ -170,24 +158,14 @@ def game():
 					print("You lost " + str(player.position))
 					#player loses
 	print("BLACKJACK Game over")
-	choice = raw_input("Do you want to play again?'").lower()
+	choice = input("Do you want to play again?'").lower()
 	if choice == 'yes':
 		actualGame()
 
 def actualGame():
-	global robot, cards_drawn, cls
-	rospy.init_node('moveit_node')
-	robot = ArmPlanner()
+	global cards_drawn
 	cards_drawn = 0
-	cls = GestureClassifier()
-	while not rospy.is_shutdown():
-		try:
-			game()
-			robot.shutdown()
-		except Exception as e:
-			print e
-		else:
-			break
+	game()
 	
 if __name__ == "__main__":
 	actualGame()
