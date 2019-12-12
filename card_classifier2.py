@@ -1,5 +1,5 @@
 import cv2
-
+# Handling for Card Recognition - Intel Realsense or Logitech Camera
 #import rospy
 #import rosbag
 #from sensor_msgs.msg import Image
