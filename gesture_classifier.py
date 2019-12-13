@@ -14,7 +14,7 @@ import numpy as np
 import time
 
 CAMERA_TOPIC = "/camera/color/image_raw"
-MODEL_PATH = "model.h5"
+MODEL_PATH = "/home/cc/ee106a/fa19/class/ee106a-aav/ros_workspace/project/src/dealplan/src/model.h5"
 NUM_SAMPLES = 10 # How many images to look at
 WINDOW_SIZE = 2 # 2s
 
@@ -24,7 +24,7 @@ class GestureClassifier():
         self.model = load_model(MODEL_PATH)
 	print("Model loaded!")
         self.bridge = CvBridge()
-        rospy.init_node('gesture_classifier', anonymous=True)
+        #rospy.init_node('gesture_classifier', anonymous=True)
 	print("Ready to classify gestures!")
 
     def recognize(self):
@@ -54,7 +54,7 @@ class GestureClassifier():
 	gesture = "hit" if label == 1 else "stay"
 	
 	print("Gesture recognized as {}.".format(gesture))
-	return np.argmax(np.bincount(pred))   
+	return gesture
  
     def classify(self, X):
         if self.model is None:
@@ -64,8 +64,7 @@ class GestureClassifier():
 
     ### Helpers for image processing ###    
     
-    @staticmethod
-    def crop(imgs, size=None, shift=(0,0)):
+    def crop(self, imgs, size=None, shift=(0,0)):
         if size is None:
             size = int(imgs.shape[1]), int(imgs.shape[2])
         h, w = size
@@ -77,8 +76,7 @@ class GestureClassifier():
 	    imgs_crop[i] = img[y0:y0+h, x0:x0+w]
         return imgs_crop
 
-    @staticmethod
-    def threshold(imgs, thres=160):
+    def threshold(self, imgs, thres=160):
         imgs_thres = np.zeros(imgs.shape)
         for i, img in enumerate(imgs):
             idx = np.where(img > thres)
@@ -86,8 +84,7 @@ class GestureClassifier():
             imgs_thres[i][idx] = 1
         return imgs_thres
 
-    @staticmethod
-    def preprocess(imgs, size=(240, 360), shift=(20,0), thres=160):
+    def preprocess(self, imgs, size=(240, 360), shift=(20,0), thres=160):
         imgs = self.crop(imgs, size=size, shift=shift)
         imgs = self.threshold(imgs, thres=thres)
         return imgs
