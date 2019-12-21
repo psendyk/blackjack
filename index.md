@@ -22,6 +22,7 @@
    As described previously, we decided to split our project into three parts: Gameplay, Kinematics, and Computer Vision. After finishing every part we would combine them in the blackjack.py file so that only one script would need to be run.  
 #### Design Choices
 ###### Gameplay
+   We wanted Baxter to play blackjack properly, which in terms of gameplay included multiple player support and the ability to hit, stay, split, or double. Due to time constraints and practicality, we ultimately went with multiple player support as well as the ability to hit and stay. Splitting may be simple for humans to perform but would require significant game logic modifications, and doubling involves betting which we chose to disregard.
 ###### Kinematics
 ###### Computer Vision
 #### Design Choices Impact
