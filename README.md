@@ -5,6 +5,9 @@
 ##### Group Number: 41 <br>
 ##### Group Members: Warren Deng, Pawel Sendyk, Henry Leou, Michael Wang, Bryan Yang <br>
 
+Baxter code can be run using
+'roslaunch dealplan blackjack.launch'
+
 Please run the codes via juypter notebook under 
 `[filename]`
 or navigate to the directory via terminal
