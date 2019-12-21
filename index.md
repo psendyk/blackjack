@@ -89,17 +89,7 @@ We created a custom card holder for our robot to use. This gave us more precisio
 <center><img src="./display_images/index.png" alt="test" width="300"/> <img src="./display_images/cardbox.png" alt="cardbox" width="300"/></center>
 
 ## Results
-Our robot was able to follow all of the functionalities that we needed it to do for kinematics. This includes drawing a card, holding a card up to the front camera to read, handing a card off to the other gripper, flipping a card from the table, and dealing to any player.   
-
-Additionally, it was able to successfully recognize hand gestures of players. Our neural net was very confident of its choices and hand gestures recognition never failed us. An example can be seen in the full demo below.
-
-Due to limited access to the robots, we worked on the computer vision parts remotely. We underestimated how much time integration takes and ran into some issues while implementing the algorithms on the robot's hardware.  
-As illustrated, our algorithm had trouble extracting the cards from Baxter camera.   
-<center><img src="./display_images/baxter_full.png" alt="baxter_full" width="250"/> <img src="./display_images/baxter_card.png" alt="baxter_card" width="250"/></center>     
-For comparison, here's how it worked with RealSense camera, which we were just a little bit short of integrating into our project.   
-<center><img src="./display_images/test_full.png" alt="test_full" width="250"/> <img src="./display_images/test_card.png" alt="baxter_card" width="250"/></center>     
-This might not seem like a big difference but sometimes it was enough to misclassify the cards, which wasn't acceptable for our blackjack dealer.
-
+Our robot was able to follow all of the functionalities that we needed it to do for kinematics. This includes drawing a card, holding a card up to the front camera to read, handing a card off to the other gripper, flipping a card from the table, and dealing to any player. Below are some most important parts of the kinematics. 
 
 ##### Video of drawing and dealing to dealer:
 
@@ -114,6 +104,16 @@ This might not seem like a big difference but sometimes it was enough to misclas
 
 ##### Video of flipping card from table:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/q_Hr4I73LuA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+Additionally, it was able to successfully recognize hand gestures of players. Our neural net was very confident of its choices and hand gestures recognition never failed us. An example can be seen in the full demo below.
+
+Due to limited access to the robots, we worked on the computer vision parts remotely. We underestimated how much time integration takes and ran into some issues while implementing the algorithms on the robot's hardware.  
+As illustrated, our algorithm had trouble extracting the cards from Baxter camera.   
+<center><img src="./display_images/baxter_full.png" alt="baxter_full" width="250"/> <img src="./display_images/baxter_card.png" alt="baxter_card" width="250"/></center>     
+For comparison, here's how it worked with RealSense camera, which we were just a little bit short of integrating into our project.   
+<center><img src="./display_images/test_full.png" alt="test_full" width="250"/> <img src="./display_images/test_card.png" alt="baxter_card" width="250"/></center>     
+This might not seem like a big difference but sometimes it was enough to misclassify the cards, which wasn't acceptable for our blackjack dealer.
 
 
 ## Conclusion
@@ -136,5 +136,5 @@ Bryan is a third year EECS major, with an interest in both hardware and software
 
 
 ## Additional Materials
-Github Project Repository: https://github.com/psendyk/blackjack   
+[Github Project Repository](https://github.com/psendyk/blackjack)
 We re-used some parts of the code available [here](https://github.com/arnabdotorg/Playing-Card-Recognition) in preprocessing of the card images.
