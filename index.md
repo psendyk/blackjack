@@ -21,18 +21,24 @@
    1. Players should only need to communicate with the Baxter via hand gestures in order to play
    2. Baxter should be relatively fast and precise when dealing cards
    3. All major rules of Blackjack should be followed (such as not revealing the dealer's second card until after everyone's turn)
-   
-   
 #### Our Design
    As described previously, we decided to split our project into three parts: Gameplay, Kinematics, and Computer Vision. After finishing every part we would combine them in the blackjack.py file so that only one script would need to be run.  
 #### Design Choices
 ###### Gameplay
-   We wanted Baxter to play blackjack properly, which in terms of gameplay included multiple player support and the ability to hit, stay, split, or double. Due to time constraints and practicality, we ultimately went with multiple player support as well as the ability to hit and stay. Splitting may be simple for humans to perform but would require significant game logic modifications, and doubling involves betting which we chose to disregard. Because the Baxter had no speakers, we needed a way for the robot to communicate to the player. To do this, we utilized the Baxter's head display by creating individual images for messages such as "Player 1's turn" that would be displayed at appropriate times. 
+   We wanted Baxter to play blackjack properly, which in terms of gameplay included multiple player support and the ability to hit, stay, split, or double. Due to time constraints and practicality, we ultimately went with multiple player support as well as the ability to hit and stay. Splitting may be simple for humans to perform but would require significant game logic modifications, and doubling involves betting which we chose to disregard.
 ###### Kinematics
 We decided to attach a gripper on each of Baxter's arms to allow it to efficiently pick up, flip, and deal the cards. For Baxter's movement we planned on primarily using inverse kinematics with the MoveIt package to perform motion planning for card manipulation. We also added constraints and objects within MoveIt, similar to how Lab 8 worked, to avoid hitting the table or the deck. Four different motions are required to deal the blackjack game. Baxter needs to pick up the card, look at it, and place it down. Placing the card face up requires the card to be flipped, which is achieved by handing the card off to the other arm. Additionally, movements of both arms are parallelized for efficiency, meaning that Baxter can deal a card while pick up the next.
 ###### Computer Vision
-#### Design Choices Impact (how did the design choices affect things)
 
+#### Design Choices Impact
+##### Robustness
+By using forward kinematics, Baxter's motion was very consistent and robust, able to regularly achieve satisfactory results over several trials. The drawing motion was quite consistent; apart from unexpected suction gripper failures Baxter was able to draw cards easily. However, due to the use of dual suction grippers and the way we had Baxter hand off the card between grippers, the card flipping action had less consistent results. Most of the time the card handoff went smoothly, but on occasion the receiving gripper would not activate in time or would end up slightly out of position, resulting in Baxter dropping the card.
+
+Our computer vision for recognizing hand gestures was quite robust, with high accuracy given a blank background and a particular camera distance. For card recognition on the other hand, while functional in a testing environment our computer vision did not work well with the Baxter's head camera since the background of the captured image was too noisy.
+##### Durability
+For Baxter's kinematics, by mostly using forward kinematics our motion system was quite durable, able to achieve the same position over and over again. Combined with MoveIt constraints and inverse kinematics for other actions, Baxter's movements are easily repeatable between different games of blackjack.
+##### Efficiency
+When designing the kinematics, we initially started with moving a single arm at a time. To make Baxter waste less time moving around and spend more time playing the game we combined left and right arm movements into a single action, therefore improving efficiency. Additionally, using two suction grippers versus one gripper plus one claw saves time by simply handing off a card instead of handing off, rotating, and again handing off a card. Possible improvements would be to find other actions where the arm motions can be parallellized or otherwise further refined.
 
 ## Implementation
 #### Gameplay 
@@ -50,7 +56,7 @@ If all players have not busted after their turns, the dealer gets its turn. It i
 #### Kinematics
 The robot kinematics and the various actions are broken down into several smaller poses, located in `arm_kinematics.py`.
 
-When testing to find out what positions we wanted Baxter in for its various actions, we found that MoveIt did not produce consistent or desirable results. For example, when Baxter draws and looks at a card the card should be tilted up at an angle to face the head camera, but MoveIt frequently held the card perfectly straight and not at a good camera angle. Therefore, we ended up using a combination of both forward and inverse kinematics to consistently achieve very specific desired postures.
+When testing to find out what positions we wanted Baxter in for its various actions, we found that MoveIt did not produce consistent or desirable results. For example, when Baxter draws and looks at a card the card should be tilted up at an angle to face the head camera, but MoveIt frequently held the card perfectly straight and not at a good camera angle. Therefore, we ended up using a combination of both forward and inverse kinematics to consistently achieve very specific desired postures. We manipulated Baxter's arms into our desired positions, used `tf_echo` to record the angles, then used forward kinematics to achieve that position in our code.
 #### Computer Vision
 
 #### Card Holder
@@ -85,7 +91,7 @@ Our robot was able to follow all of the functionalities that we needed it to do 
 
 ## Team
 #### Warren Deng
-Warren is a third year double major in EECS and Mechanical Engineering. He has taken EE16B and EE120 and hopes to expand his knowledge in the field of Mechatronics. He worked at an defense contractor doing power engineering his freshman year. For the project, Warren worked on gameplay and kinematics. He wrote most of the gameplay and helped integrate the kinematics so that they worked when neccessary. He also designed the card holder in SolidWorks and wrote the code to display messages on the Baxter's face. 
+Warren is a third year double major in EECS and Mechanical Engineering. He has taken EE16B and EE120 and hopes to expand his knowledge in the field of Mechatronics. He worked at an defense contractor doing power engineering his freshman year. For the project, Warren worked on gameplay and kinematics. He wrote most of the gameplay and helped integrate the kinematics so that they worked when neccessary. He also designed the card holder in SolidWorks. 
 #### Henry Leou
 #### Pawel Sendyk
 #### Michael Wang
