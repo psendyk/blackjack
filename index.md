@@ -85,7 +85,7 @@ Our robot was able to follow all of the functionalities that we needed it to do 
 
 ## Team
 #### Warren Deng
-Warren is a third year double major in EECS and Mechanical Engineering. He has taken EE16B and EE120 and hopes to expand his knowledge in the field of Mechatronics. He worked at an defense contractor doing power engineering his freshman year. For the project, Warren worked on gameplay and kinematics. He wrote most of the gameplay and helped integrate the kinematics so that they worked when neccessary. He also designed the card holder in SolidWorks. 
+Warren is a third year double major in EECS and Mechanical Engineering. He has taken EE16B and EE120 and hopes to expand his knowledge in the field of Mechatronics. He worked at an defense contractor doing power engineering his freshman year. For the project, Warren worked on gameplay and kinematics. He wrote most of the gameplay and helped integrate the kinematics so that they worked when neccessary. He also designed the card holder in SolidWorks and wrote the code to display messages on the Baxter's face. 
 #### Henry Leou
 #### Pawel Sendyk
 #### Michael Wang
