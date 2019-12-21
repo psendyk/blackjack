@@ -17,7 +17,7 @@ The most obvious real-world application for our project is replacing Blackjack d
 
 
 ## Design
-![File Hierarchy](/display_images/  blkjk_filestruct.jpg)
+![File Hierarchy](/display_images/blkjk_filestruct.jpg)
 <!--img src="https://github.com/psendyk/blackjack/blob/master/blkjk_filestruct.jpg" alt="Project file hierarchy" class="inline"/-->
 
 #### Design Criteria
