@@ -13,7 +13,7 @@
 
 
 ## Design
-<img src="https://github.com/psendyk/blackjack/blob/master/blkjk_filestruct.jpg" alt="Project file hierarchy" class="inline" width="200" height="100"/>
+<img src="https://github.com/psendyk/blackjack/blob/master/blkjk_filestruct.jpg" alt="Project file hierarchy" class="inline"/>
 #### Design Criteria
    We had three design rules that we wanted to folow:
    1. Players should only need to communicate with the Baxter via hand gestures in order to play
@@ -42,7 +42,7 @@ If all players have not busted after their turns, the dealer gets its turn. It i
 
 #### Card Holder
 We created a custom card holder for our robot to use. This gave us more precision when picking up the cards because they wouldn’t slide around when being picked up. We decided to laser cut the card holder because it was relatively cheap and much faster than 3D printing. We measured the cards, designed the base and side parts in SolidWorks, and assembled virtually them to make sure they fit. We then laser cut the box using ¼ inch acrylic.    
-<img src="https://github.com/psendyk/blackjack/blob/master/index.png" alt="Project file hierarchy" class="inline"/>
+<img src="https://github.com/psendyk/blackjack/blob/master/index.png" alt="Project file hierarchy" class="inline" width="200" height="100"/>
 
 
 
