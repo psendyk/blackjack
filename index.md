@@ -44,7 +44,7 @@ We built the card classifier for a specific deck of cards, i.e. it can only work
 The most important component of this part is the accuracy and robustness to image rotation and translation which arises with variance in Baxter's movements.
 We had to adjust our algorithms for Baxter's low quality camera, and make some trade-offs between speed and accuracy. Our algorithm had problems with lower quality images and at the end we mounted an external camera to Baxter's head to improve the accuracy.   
 
-##### Hand-gesture Recognition
+###### Hand-gesture Recognition
 Furthermore, to make the human-robot interaction more natural, we implemented hand gestures for the actions players can take.
 In order to accomplish this, we trained a neural net classifier using manually collected dataset.  
 
