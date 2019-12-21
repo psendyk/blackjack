@@ -7,15 +7,17 @@
 
 
 ## Introduction
-   Blackjack is an extremely popular card game that is played in most casinos. We noticed that throughout a game of Blackjack, the dealer goes through a standard procedure: setting up the board, dealing cards to the players, dealing cards to itself, and then checking who won. We thought that this process could be completely automated by replacing the dealer with a Baxter robot. In doing so we wanted to make the Baxter behave as humanlike as possible by minimizing the amount a player had to manually interact with a computer interface.
-  
-   To replace the dealer, we needed to accomplish three tasks. First, we needed to create the game of Blackjack in code so that the robot could deal and play in accordance to the rules. Second, we needed the robot to be able to mimic the motions of the dealer. These included drawing a card, dealing a card to its correct location, and flipping a card if it was originally face down. Lastly, we needed to the robot to be able to interpret both the player’s actions (hit or stand) and card values from an image of the card. We determined that computer vision using a real sense camera and the Baxter head camera was the best way to do this. Together, these three tasks represented the Gameplay, Kinematics, and Computer Vision aspects of our project. 
-  
+   Blackjack is an extremely popular card game that is played in most casinos. We noticed that throughout a game of Blackjack, the dealer goes through a standard procedure: setting up the board, dealing cards to the players, dealing cards to itself, and then checking who won. We thought that this process could be completely automated by replacing the dealer with a robot. Our goal was for multiple players to be able to play a game of Blackjack with the Baxter robot. In doing so we wanted to make the Baxter behave as humanlike as possible by minimizing the amount a player had to manually interact with a computer interface.
+      To replace the dealer, we needed to accomplish three tasks. First, we needed to create the game of Blackjack in code so that the robot could deal and play in accordance to the rules. Second, we needed the robot to be able to mimic the motions of the dealer. These included drawing a card, dealing a card to its correct location, and flipping a card if it was originally face down. Lastly, we needed to the robot to be able to interpret both the player’s actions (hit or stand) and card values from an image of the card. We determined that computer vision using a real sense camera and the Baxter head camera was the best way to do this. Together, these three tasks represented the Gameplay, Kinematics, and Computer Vision aspects of our project. 
    The most obvious real-world application for our project is replacing Blackjack dealers in casinos. Casinos would save a lot of money and would still satisfy players who would rather play Blackjack with physical cards instead of digitally. Our implementation of drawing, interpreting, and dealing cards could also be applied to different casino card games such as poker.
 
 
 ## Design
-  The desired functionality of our project was for multiple players to be able to play a game of Blackjack with the Baxter robot. The design criteria is that the players must not be able to directly interact with the terminal aside from starting the game. They should be able to play the game just with the Baxter. 
+   We had three design rules that we wanted to folow:
+   1. Players should only need to communicate with the Baxter via hand gestures in order to play
+   2. Baxter should be relatively fast and precise when dealing cards
+   3. All major rules of Blackjack should be followed (such as not revealing the dealer's second card until after everyone's turn)
+
 
 
 ## Implementation
