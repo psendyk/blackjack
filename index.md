@@ -19,7 +19,8 @@
 
 
 ## Implementation
-Gameplay: Our implementation of gameplay follows the standard rules of Blackjack and supports multiple players. It is located in blackjack.py.  
+#### Gameplay 
+Our implementation of gameplay follows the standard rules of Blackjack and supports multiple players. It is located in blackjack.py.  
 To keep track of everyone playing, we created a Player class that has the following attributes: hand (keeps a count of what cards the player has), isDealer (if the player is a dealer), gameOver (if the player’s turn is over), isBusted (if the player busted while hitting), blackjack (if the player had initially gotten blackjack), position (used by kinematics to determine where the player is), offset (keeps track of how many cards the player has, used by the kinematics to determine where to place the card relative to position). 
 When the game starts, a user-inputted amount of Players are created, along with the dealer. They are each dealt two cards. The dealer’s hand is then checked to see if it has blackjack. If it does, the game is over and each player who doesn’t have blackjack loses. If it doesn’t, the game continues. 
 Now each player is allowed to play their turn. A player’s turn consists of either hitting or standing (in which case their turn is over). Everytime they hit a card is appended to their hand. This hand is then checked to make sure they haven’t busted. Aces are handled automatically by choosing the highest possible value without having the hand bust.
@@ -29,11 +30,11 @@ If all players have not busted after their turns, the dealer gets its turn. It i
 
 ## Results
 Our robot was able to follow all of the functionalities that we needed it to do for kinematics. This includes drawing a card, holding a card up to the front camera to read, handing a card off to the other gripper, flipping a card from the table, and dealing to any player. Additionally, it was able to successfully recognize hand gestures of players. However, card recognition did not work very well with the Baxter head camera despite working with other cameras including images taken by an iPhone. We deduced that the resolution and brightness on the ASIMOV camera was too low for our data set. 
-Video of drawing and dealing to dealer:
-Video of dealing to player:
-Video of handoff:
-Video of flipping card from table:
-Video of gesture recognization: 
+#### Video of drawing and dealing to dealer:
+#### Video of dealing to player:
+#### Video of handoff:
+#### Video of flipping card from table:
+#### Video of gesture recognization: 
 
 
 ## Conclusion
