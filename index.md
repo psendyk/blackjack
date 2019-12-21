@@ -21,6 +21,8 @@
    1. Players should only need to communicate with the Baxter via hand gestures in order to play
    2. Baxter should be relatively fast and precise when dealing cards
    3. All major rules of Blackjack should be followed (such as not revealing the dealer's second card until after everyone's turn)
+   
+   
 #### Our Design
    As described previously, we decided to split our project into three parts: Gameplay, Kinematics, and Computer Vision. After finishing every part we would combine them in the blackjack.py file so that only one script would need to be run.  
 #### Design Choices
