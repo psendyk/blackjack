@@ -150,5 +150,6 @@ Bryan is a third year EECS major, with an interest in both hardware and software
 
 
 ## Additional Materials
-[Github Project Repository](https://github.com/psendyk/blackjack)    
+[Github Project Repository](https://github.com/psendyk/blackjack)
+This repository contains all the code you need to run our project in addition to the SolidWorks file we used to create the card holder. 
 We re-used some parts of the code available [here](https://github.com/arnabdotorg/Playing-Card-Recognition) in preprocessing of the card images.
