@@ -15,6 +15,7 @@
 
 
 ## Design
+  The desired functionality of our project was for multiple players to be able to play a game of Blackjack with the Baxter robot. The design criteria is that the players must not be able to directly interact with the terminal aside from starting the game. They should be able to play the game just with the Baxter. 
 
 
 ## Implementation
