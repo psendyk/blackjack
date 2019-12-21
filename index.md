@@ -44,10 +44,8 @@ If all players have not busted after their turns, the dealer gets its turn. It i
 
 #### Card Holder
 We created a custom card holder for our robot to use. This gave us more precision when picking up the cards because they wouldn’t slide around when being picked up. We decided to laser cut the card holder because it was relatively cheap and much faster than 3D printing. We measured the cards, designed the base and side parts in SolidWorks, and assembled virtually them to make sure they fit. We then laser cut the box using ¼ inch acrylic.    
-<img src="https://github.com/psendyk/blackjack/blob/master/display_images/index.png" alt="card holder model" class="inline" width="200" height="200"/>
-![Test](/display_images/unknown (1).png)
-
-<img src="https://github.com/psendyk/blackjack/blob/master/display_images/unknown%20(1).png" alt="actual card holder" class="inline" width="200" height="200"/>
+![Test](/display_images/index.png)
+![CardBox](/display_images/cardbox.png)
 
 
 
