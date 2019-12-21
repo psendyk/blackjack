@@ -28,6 +28,12 @@ If all players have not busted after their turns, the dealer gets its turn. It i
 
 
 ## Results
+Our robot was able to follow all of the functionalities that we needed it to do for kinematics. This includes drawing a card, holding a card up to the front camera to read, handing a card off to the other gripper, flipping a card from the table, and dealing to any player. Additionally, it was able to successfully recognize hand gestures of players. However, card recognition did not work very well with the Baxter head camera despite working with other cameras including images taken by an iPhone. We deduced that the resolution and brightness on the ASIMOV camera was too low for our data set. 
+Video of drawing and dealing to dealer:
+Video of dealing to player:
+Video of handoff:
+Video of flipping card from table:
+Video of gesture recognization: 
 
 
 ## Conclusion
