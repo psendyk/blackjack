@@ -146,6 +146,8 @@ In terms of computer vision, we had originally envisioned the Baxter to be able 
 ## Team
 #### Warren Deng
 Warren is a third year double major in EECS and Mechanical Engineering. He has taken EE16B and EE120 and hopes to expand his knowledge in the field of Mechatronics. He worked at an defense contractor doing power engineering his freshman year. For the project, Warren worked on gameplay and kinematics. He wrote most of the gameplay and helped integrate the kinematics so that they worked when neccessary. He also designed the card holder in SolidWorks. 
+#### Henry Leou
+Henry is a fourth year Applied Math major and helped on the computer vision.
 #### Pawel Sendyk   
 Pawel is a senior majoring in CS, with interests in machine learning, big data, and human-robot interaction. You might think that CS takes a lot of time, but he actually spends most of this time in a [swimming pool](https://calbears.com/sports/mens-swimming-and-diving/roster/pawel-sendyk/14865). Following graduation, he will be starting as a software engineer at a start-up in the data analytics space. He worked on the computer vision component of this project.   
 #### Michael Wang
