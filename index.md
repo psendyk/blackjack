@@ -100,3 +100,4 @@ Bryan is a third year EECS major, with an interest in both hardware and software
 
 
 ## Additional Materials
+Github Project Repository: https://github.com/psendyk/blackjack
