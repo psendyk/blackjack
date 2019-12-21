@@ -2,25 +2,25 @@
 
 ##### Group Number: 41 <br>
 ##### Group Members: Warren Deng, Henry Leou, Pawel Sendyk , Michael Wang, Bryan Yang <br>
-
+![File](/display_images/bj.jpg)
 
 ## Introduction
 Blackjack is an extremely popular card game that is played in most casinos. We noticed that throughout a game of Blackjack, the dealer goes through a standard procedure: setting up the board, dealing cards to the players, dealing cards to itself, and then checking who won. We thought that this process could be completely automated by replacing the dealer with a robot. Our goal was for multiple players to be able to play a game of Blackjack with the Baxter robot. In doing so we wanted to make the Baxter behave as humanlike as possible by minimizing the amount a player had to manually interact with a computer interface.
    
    
-To replace the dealer, we needed to accomplish three tasks. First, we needed to create the game of Blackjack in code so that the robot could deal and play in accordance to the rules. Second, we needed the robot to be able to mimic the motions of the dealer. These included drawing a card, dealing a card to its correct location, and flipping a card if it was originally face down. Lastly, we needed to the robot to be able to interpret both the player’s actions (hit or stand) and card values from an image of the card. Together, these three tasks represented the Gameplay, Kinematics, and Computer Vision aspects of our project. 
+To replace the dealer, we needed to accomplish three tasks. First, we needed to create the game of Blackjack in code so that the robot could deal and play in accordance to the rules. Second, we needed the robot to be able to mimic the motions of the dealer. These included drawing a card, dealing a card to its correct location, and flipping a card if it was originally face down. Lastly, we needed the robot to be able to interpret both the player’s actions (hit or stand) and card values from an image of the card. Together, these three tasks represented the Gameplay, Kinematics, and Computer Vision aspects of our project. 
     
     
 The most obvious real-world application for our project is replacing Blackjack dealers in casinos. Casinos would save a lot of money and would still satisfy players who would rather play Blackjack with physical cards instead of digitally. Our implementation of drawing, interpreting, and dealing cards could also be applied to different casino card games such as poker.
 
-
+![Filed](/display_images/head.png)
 ## Design
 ![File Hierarchy](/display_images/blkjk_filestruct.jpg)
 <!--img src="https://github.com/psendyk/blackjack/blob/master/blkjk_filestruct.jpg" alt="Project file hierarchy" class="inline"/-->
 
 #### Design Criteria
    We had three design rules that we wanted to folow:
-   1. Players should only need to communicate with the Baxter via hand gestures in order to play
+   1. Players should only need to communicate with the Baxter via hand gestures
    2. Baxter should be relatively fast and precise when dealing cards
    3. All major rules of Blackjack should be followed (such as not revealing the dealer's second card until after everyone's turn)
    
@@ -29,9 +29,9 @@ The most obvious real-world application for our project is replacing Blackjack d
    As described previously, we decided to split our project into three parts: Gameplay, Kinematics, and Computer Vision. After finishing every part we would combine them in the blackjack.py file so that only one script would need to be run.  
 #### Design Choices
 ###### Gameplay
-   We wanted Baxter to play blackjack properly, which in terms of gameplay included multiple player support and the ability to hit, stay, split, or double. Due to time constraints and practicality, we ultimately went with multiple player support as well as the ability to hit and stay. Splitting may be simple for humans to perform but would require significant game logic modifications, and doubling involves betting which we chose to disregard.
+   We wanted Baxter to play blackjack properly, which in terms of gameplay included multiple player support and the ability to hit, stay, split, or double. Due to time constraints and practicality, we ultimately went with multiple player support as well as the ability to hit and stay because these two functionalities are much more important to the game than splitting and doubling down. Splitting may be simple for humans to perform but would require significant game logic and kinematic modifications, and doubling involves betting which we chose to disregard.
 ###### Kinematics
-We decided to attach a gripper on each of Baxter's arms to allow it to efficiently pick up, flip, and deal the cards. For Baxter's movement we planned on primarily using inverse kinematics with the MoveIt package to perform motion planning for card manipulation. We also added constraints and objects within MoveIt, similar to how Lab 8 worked, to avoid hitting the table or the deck. Four different motions are required to deal the blackjack game. Baxter needs to pick up the card, look at it, and place it down. Placing the card face up requires the card to be flipped, which is achieved by handing the card off to the other arm. Additionally, movements of both arms are parallelized for efficiency, meaning that Baxter can deal a card while pick up the next.
+We decided to attach a gripper on each of Baxter's arms to allow it to efficiently pick up, flip, and deal the cards. For Baxter's movement we planned on primarily using inverse kinematics with the MoveIt package to perform motion planning for card manipulation. However, after some testing we realized that many times inverse kinematics would fail to locate a proper path even for relatively simple motions. Because of this, we were forced to use forward kinematics for some movements. Three different motions were required to deal the blackjack game: Baxter needed to pick up the card, look at it, and place it down. Placing the card face up required the card to be flipped, which was achieved by handing the card off to the other arm. Additionally, movements of both arms were parallelized for efficiency, meaning that Baxter could deal a card while pick up the next.
 ###### Computer Vision
 We decided to use a neural network for our implementation of the gesture classifier, which allowed for more generalization without adding more complexity to the code. It's also easily extensible to more gestures, such as split or double down, which we collected in our dataset but decided not to include in the gameplay as mentioned above.
 
@@ -59,23 +59,23 @@ When designing the kinematics, we initially started with moving a single arm at 
 
 ## Implementation
 #### Gameplay 
-Our implementation of gameplay follows the standard rules of Blackjack and supports multiple players. It is located in blackjack.py.  
+Our implementation of gameplay follows the standard rules of Blackjack and supports multiple players. It is located in `blackjack.py`.  
 
 
-To keep track of everyone playing, we created a Player class that has the following attributes: hand (keeps a count of what cards the player has), isDealer (if the player is a dealer), gameOver (if the player’s turn is over), isBusted (if the player busted while hitting), blackjack (if the player had initially gotten blackjack), position (used by kinematics to determine where the player is), offset (keeps track of how many cards the player has, used by the kinematics to determine where to place the card relative to position).
+To keep track of everyone playing, we created a Player class that has the following attributes: hand (keeps a count of what cards the player has), isDealer (if the player is a dealer), gameOver (if the player’s turn is over), isBusted (if the player busted while hitting), blackjack (if the player had initially gotten blackjack), position (used by kinematics to determine where the player is), and offset (keeps track of how many cards the player has, used by the kinematics to determine where to place the card relative to position).
 
 
 When the game starts, a user-inputted amount of Players are created, along with the dealer. They are each dealt two cards. The dealer’s hand is then checked to see if it has blackjack. If it does, the game is over and each player who doesn’t have blackjack loses. If it doesn’t, the game continues. 
 
 
-Now each player is allowed to play their turn. A player’s turn consists of either hitting or standing (in which case their turn is over). Everytime they hit a card is appended to their hand. This hand is then checked to make sure they haven’t busted. Aces are handled automatically by choosing the highest possible value without having the hand bust.
+Now each player is allowed to play their turn. A player’s turn consists of either hitting or standing (in which case their turn is over). Everytime they hit, a card is appended to their hand. This hand is then checked to make sure they haven’t busted. Aces are handled automatically by choosing the highest possible value without having the hand bust.
 If all players have not busted after their turns, the dealer gets its turn. It is forced to hit until it busts or passes a hand value of 17. If the dealer busts, everyone who hasn’t busted wins. If the dealer doesn’t bust, every player who hasn’t busted that has a higher hand value than the dealer wins. The game is now over and all variables are reset.
 #### Kinematics
 The robot kinematics and the various actions are broken down into several smaller poses, located in `arm_kinematics.py`.
 
 When testing to find out what positions we wanted Baxter in for its various actions, we found that MoveIt did not produce consistent or desirable results. For example, when Baxter draws and looks at a card the card should be tilted up at an angle to face the head camera, but MoveIt frequently held the card perfectly straight and not at a good camera angle. Therefore, we ended up using a combination of both forward and inverse kinematics to consistently achieve very specific desired postures. We manipulated Baxter's arms into our desired positions, used `tf_echo` to record the angles, then used forward kinematics to achieve that position in our code.
 
-For robustness, Baxter repeatedly attempts to grasp the card until it is sucessfully attached, at which point it will move onto the next action.
+For robustness, Baxter repeatedly attempts to grasp the card until it is sucessfully attached, at which point it will move onto the next action. 
 
 
 
@@ -129,15 +129,24 @@ This might not seem like a big difference but sometimes it was enough to misclas
 
 ## Conclusion
 
-Overall, we were satisfied with how our project turned out. In terms of kinematics and gameplay, we attained our original goals: the game supported multiple players and the human-robot interaction felt pretty natural. However, 
- Given more time, we would have integrated another RealSense camera into our project to assure that the robot can read the cards correctly with high enough accuracy.
+Overall, we were satisfied with how our project turned out. In terms of kinematics and gameplay, we attained our original goals: the game supported multiple players and the human-robot interaction felt pretty natural. However we fell a little short in terms of computer vision integration because it did not work particularly well when using the Baxter head camera. Given more time, we would have integrated another RealSense camera into our project to assure that the robot can read the cards correctly with high enough accuracy.
 
-###### Demo Video
+#### Improvements
+If we were to expand upon the project, we would definitely find a way to implement betting either through physical means such as poker chips or digitally through the Baxter's code. This would fall in line with our design criteria of making our project as similar to a real Blackjack game, and allow us to introduce doubling down.
+
+
+For kinematics, we would want to eliminate most uses of forward kinematics, and instead rely on just inverse kinematics. This would increase robustness as our game could then be played on any surface of any height as opposed to the one that we hard-coded the knematics for. However, this implementation may reduce the speed at which the Baxter deals as we noticed that inverse kinematics sometimes finds extremely bizzare paths. 
+
+In terms of computer vision, we had originally envisioned the Baxter to be able to read the entire table throughout the game via a real sense camera so that it knows what hands each player has without having to scan each individual card when drawing. This would save the Baxter a lot of time when dealing (because each card could just be directly placed down) and we would only need a single camera for the entire project because gestures could also be read through this camera. Having a camera pointed at the table also means that the Baxter could be able to detect where to pick up the cards and place them down, without having predefined locations for either, improving robustness. 
+
+##### Demo Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RZcsRvl0Fs4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Team
 #### Warren Deng
 Warren is a third year double major in EECS and Mechanical Engineering. He has taken EE16B and EE120 and hopes to expand his knowledge in the field of Mechatronics. He worked at an defense contractor doing power engineering his freshman year. For the project, Warren worked on gameplay and kinematics. He wrote most of the gameplay and helped integrate the kinematics so that they worked when neccessary. He also designed the card holder in SolidWorks. 
+#### Henry Leou
+Henry is a fourth year majoring in Data Science and Applied Math. Despite his major, he has taken EE120, EE123, CS189/289A. Interested in deep learning, algorithms, and backend software engineering. He helped on writing scripts and design on for computer vision, specifically on deep learning for hand gesture and card recognition.
 #### Pawel Sendyk   
 Pawel is a senior majoring in CS, with interests in machine learning, big data, and human-robot interaction. You might think that CS takes a lot of time, but he actually spends most of this time in a [swimming pool](https://calbears.com/sports/mens-swimming-and-diving/roster/pawel-sendyk/14865). Following graduation, he will be starting as a software engineer at a start-up in the data analytics space. He worked on the computer vision component of this project.   
 #### Michael Wang
