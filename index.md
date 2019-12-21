@@ -31,7 +31,7 @@ The most obvious real-world application for our project is replacing Blackjack d
 ###### Gameplay
    We wanted Baxter to play blackjack properly, which in terms of gameplay included multiple player support and the ability to hit, stay, split, or double. Due to time constraints and practicality, we ultimately went with multiple player support as well as the ability to hit and stay because these two functionalities are much more important to the game than splitting and doubling down. Splitting may be simple for humans to perform but would require significant game logic and kinematic modifications, and doubling involves betting which we chose to disregard.
 ###### Kinematics
-We decided to attach a gripper on each of Baxter's arms to allow it to efficiently pick up, flip, and deal the cards. For Baxter's movement we planned on primarily using inverse kinematics with the MoveIt package to perform motion planning for card manipulation. We also added constraints and objects within MoveIt, similar to how Lab 8 worked, to avoid hitting the table or the deck. Four different motions are required to deal the blackjack game. Baxter needs to pick up the card, look at it, and place it down. Placing the card face up requires the card to be flipped, which is achieved by handing the card off to the other arm. Additionally, movements of both arms are parallelized for efficiency, meaning that Baxter can deal a card while pick up the next.
+We decided to attach a gripper on each of Baxter's arms to allow it to efficiently pick up, flip, and deal the cards. For Baxter's movement we planned on primarily using inverse kinematics with the MoveIt package to perform motion planning for card manipulation. However, after some testing we realized that many times inverse kinematics would fail to locate a proper path even for relatively simple motions. Because of this, we were forced to use forward kinematics for some movements. Three different motions were required to deal the blackjack game: Baxter needed to pick up the card, look at it, and place it down. Placing the card face up required the card to be flipped, which was achieved by handing the card off to the other arm. Additionally, movements of both arms were parallelized for efficiency, meaning that Baxter could deal a card while pick up the next.
 ###### Computer Vision
 We decided to use a neural network for our implementation of the gesture classifier, which allowed for more generalization without adding more complexity to the code. It's also easily extensible to more gestures, such as split or double down, which we collected in our dataset but decided not to include in the gameplay as mentioned above.
 
@@ -59,16 +59,16 @@ When designing the kinematics, we initially started with moving a single arm at 
 
 ## Implementation
 #### Gameplay 
-Our implementation of gameplay follows the standard rules of Blackjack and supports multiple players. It is located in blackjack.py.  
+Our implementation of gameplay follows the standard rules of Blackjack and supports multiple players. It is located in `blackjack.py`.  
 
 
-To keep track of everyone playing, we created a Player class that has the following attributes: hand (keeps a count of what cards the player has), isDealer (if the player is a dealer), gameOver (if the player’s turn is over), isBusted (if the player busted while hitting), blackjack (if the player had initially gotten blackjack), position (used by kinematics to determine where the player is), offset (keeps track of how many cards the player has, used by the kinematics to determine where to place the card relative to position).
+To keep track of everyone playing, we created a Player class that has the following attributes: hand (keeps a count of what cards the player has), isDealer (if the player is a dealer), gameOver (if the player’s turn is over), isBusted (if the player busted while hitting), blackjack (if the player had initially gotten blackjack), position (used by kinematics to determine where the player is), and offset (keeps track of how many cards the player has, used by the kinematics to determine where to place the card relative to position).
 
 
 When the game starts, a user-inputted amount of Players are created, along with the dealer. They are each dealt two cards. The dealer’s hand is then checked to see if it has blackjack. If it does, the game is over and each player who doesn’t have blackjack loses. If it doesn’t, the game continues. 
 
 
-Now each player is allowed to play their turn. A player’s turn consists of either hitting or standing (in which case their turn is over). Everytime they hit a card is appended to their hand. This hand is then checked to make sure they haven’t busted. Aces are handled automatically by choosing the highest possible value without having the hand bust.
+Now each player is allowed to play their turn. A player’s turn consists of either hitting or standing (in which case their turn is over). Everytime they hit, a card is appended to their hand. This hand is then checked to make sure they haven’t busted. Aces are handled automatically by choosing the highest possible value without having the hand bust.
 If all players have not busted after their turns, the dealer gets its turn. It is forced to hit until it busts or passes a hand value of 17. If the dealer busts, everyone who hasn’t busted wins. If the dealer doesn’t bust, every player who hasn’t busted that has a higher hand value than the dealer wins. The game is now over and all variables are reset.
 #### Kinematics
 The robot kinematics and the various actions are broken down into several smaller poses, located in `arm_kinematics.py`.
