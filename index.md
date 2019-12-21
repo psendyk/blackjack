@@ -3,7 +3,7 @@
 ## Automated BlackJack Dealer [Baxter]
 
 ##### Group Number: 41 <br>
-##### Group Members: Warren Deng, Pawel Sendyk, Henry Leou, Michael Wang, Bryan Yang <br>
+##### Group Members: Warren Deng, Henry Leou, Pawel Sendyk , Michael Wang, Bryan Yang <br>
 
 
 ## Introduction
@@ -82,10 +82,10 @@ Our robot was able to follow all of the functionalities that we needed it to do 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RZcsRvl0Fs4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Team
-#### Pawel Sendyk
-#### Henry Leou
 #### Warren Deng
 Warren is a third year double major in EECS and Mechanical Engineering. He has taken EE16B and EE120 and hopes to expand his knowledge in the field of Mechatronics. He worked at an defense contractor doing power engineering his freshman year. For the project, Warren worked on gameplay and kinematics. He wrote most of the gameplay and helped integrate the kinematics so that they worked when neccessary. He also designed the card holder in SolidWorks. 
+#### Henry Leou
+#### Pawel Sendyk
 #### Michael Wang
 #### Bryan Yang
 
