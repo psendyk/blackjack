@@ -29,8 +29,14 @@
 ###### Kinematics
 We decided to attach a gripper on each of Baxter's arms to allow it to efficiently pick up, flip, and deal the cards. For Baxter's movement we planned on primarily using inverse kinematics with the MoveIt package to perform motion planning for card manipulation. We also added constraints and objects within MoveIt, similar to how Lab 8 worked, to avoid hitting the table or the deck. Four different motions are required to deal the blackjack game. Baxter needs to pick up the card, look at it, and place it down. Placing the card face up requires the card to be flipped, which is achieved by handing the card off to the other arm. Additionally, movements of both arms are parallelized for efficiency, meaning that Baxter can deal a card while pick up the next.
 ###### Computer Vision
-We decided to use a neural network for our implementation of the gesture classifier, which allowed for more generalization without adding more complexity to the code. It's also easily extensible to more gestures, such as split or double down, which we collected in our dataset but decided not to include in the gameplay as mentioned above.
-We built the card classifier for a specific deck of cards, i.e. it can only work with one type of cards at a time. We made sure to make it easy to load and use different decks, provided images of it. The size of a deck of cards creates a 52-dimensional classification problem, which we decided would be best solved with a minimum difference algorithm.
+We decided to use a neural network for our implementation of the gesture classifier, which allowed for more generalization without adding more complexity to the code. It's also easily extensible to more gestures, such as split or double down, which we collected in our dataset but decided not to include in the gameplay as mentioned above.    
+We built the card classifier for a specific deck of cards, i.e. it can only work with one type of cards at a time. We made sure to make it easy to load and use different decks, provided images of it. The size of a deck of cards creates a 52-dimensional classification problem, which we decided would be best solved with a minimum difference algorithm, which compares the captured card against every card in our deck.
+The most important component of this part is the accuracy and robustness to image rotation and translation which arises with variance in Baxter's movements.
+We had to adjust our algorithms for Baxter's low quality camera, and make some trade-offs between speed and accuracy. Our algorithm had problems with lower quality images and at the end we mounted an external camera to Baxter's head to improve the accuracy.   
+
+##### Hand-gesture Recognition
+Furthermore, to make the human-robot interaction more natural, we implemented hand gestures for the actions players can take.
+In order to accomplish this, we trained a neural net classifier using manually collected dataset.  
 
 
 #### Design Choices Impact
@@ -42,16 +48,6 @@ Our computer vision for recognizing hand gestures was quite robust, with high ac
 For Baxter's kinematics, by mostly using forward kinematics our motion system was quite durable, able to achieve the same position over and over again. Combined with MoveIt constraints and inverse kinematics for other actions, Baxter's movements are easily repeatable between different games of blackjack.
 ##### Efficiency
 When designing the kinematics, we initially started with moving a single arm at a time. To make Baxter waste less time moving around and spend more time playing the game we combined left and right arm movements into a single action, therefore improving efficiency. Additionally, using two suction grippers versus one gripper plus one claw saves time by simply handing off a card instead of handing off, rotating, and again handing off a card. Possible improvements would be to find other actions where the arm motions can be parallellized or otherwise further refined.
-
-### Computer Vision
-##### Card Recognition  
-We used computer vision to allow the robot to recognize the cards it's dealing.
-In our final implementation, we used template matching which compares the captured card against every card in our deck.
-The most important component of this part is the accuracy and robustness to image rotation and translation which arises with variance in Baxter's movements.
-We had to adjust our algorithms for Baxter's low quality camera, and make some trade-offs between speed and accuracy. Our algorithm had problems with lower quality images and at the end we mounted an external camera to Baxter's head to improve the accuracy.
-##### Hand-gesture Recognition
-Furthermore, to make the human-robot interaction more natural, we implemented hand gestures for the actions players can take.
-In order to accomplish this, we trained a neural net classifier using manually collected dataset.  
 
 ## Implementation
 #### Gameplay 
@@ -82,7 +78,7 @@ We started by collecting a dataset containing ~100 frames for each gesture.
 We built and trained a 2-layer convolutional neural network ([CNN](https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)) which gave us 100% test accuracy.
 The CNN creates filters in training, which correspond to different elements of a hand.
 Thanks to the static background, we were able to threshold the images and create a mask, which we then feed into our neural net. This additional preprocessing allowed for a simplified network architecture, which turns out to be the biggest expense in terms of time and memory. Below is an example of the original frame and input into our network.    
-<center><img src="./display_images/hand_original.png" alt="hand_original" width="250"/> <img src="./display_images/arrow.png" alt="arrow" width="100"/> <img src="./display_images/hand_thres.png" alt="hand_thres" width="250"/></center>   
+<center><img src="./display_images/hand_original.png" alt="hand_original" width="250"/> <img src="./display_images/hand_thres.png" alt="hand_thres" width="250"/></center>   
 The main component of our network were two sets of a convolutional layer with [ReLU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks)) activation function, followed by a [max pooling](https://www.quora.com/What-is-max-pooling-in-convolutional-neural-networks) layer.
 Since our implementation supported only two choices (hit or stay), we used a sigmoid activation function in the final layer, which approximates the probability of the corresponding gesture.
 We also augmented the dataset with rotations and translations, which made the network more robust and was necessary for multi-player support.  
@@ -99,9 +95,9 @@ Additionally, it was able to successfully recognize hand gestures of players. Ou
 
 Due to limited access to the robots, we worked on the computer vision parts remotely. We underestimated how much time integration takes and ran into some issues while implementing the algorithms on the robot's hardware.  
 As illustrated, our algorithm had trouble extracting the cards from Baxter camera.   
-<center><img src="./display_images/baxter_full.png" alt="baxter_full" width="250"/> <img src="./display_images/arrow.png" alt="arrow" width="100"/> <img src="./display_images/baxter_card.png" alt="baxter_card" width="250"/></center>     
+<center><img src="./display_images/baxter_full.png" alt="baxter_full" width="250"/> <img src="./display_images/baxter_card.png" alt="baxter_card" width="250"/></center>     
 For comparison, here's how it worked with RealSense camera, which we were just a little bit short of integrating into our project.   
-<center><img src="./display_images/test_full.png" alt="test_full" width="250"/> <img src="./display_images/arrow.png" alt="arrow" width="100"/> <img src="./display_images/test_card.png" alt="baxter_card" width="250"/></center>     
+<center><img src="./display_images/test_full.png" alt="test_full" width="250"/> <img src="./display_images/test_card.png" alt="baxter_card" width="250"/></center>     
 This might not seem like a big difference but sometimes it was enough to misclassify the cards, which wasn't acceptable for our blackjack dealer.
 
 
