@@ -1,6 +1,4 @@
-# EECS C106a Fall 2019 Final Project
-
-## Automated BlackJack Dealer [Baxter]
+# Automated BlackJack Dealer Using Baxter
 
 ##### Group Number: 41 <br>
 ##### Group Members: Warren Deng, Henry Leou, Pawel Sendyk , Michael Wang, Bryan Yang <br>
@@ -131,7 +129,7 @@ This might not seem like a big difference but sometimes it was enough to misclas
 
 ## Conclusion
 
-Overall, we were satisfied with how our project turned out. All of the components support multiple players and the human-robot interaction felt pretty natural.
+Overall, we were satisfied with how our project turned out. In terms of kinematics and gameplay, we attained our original goals: the game supported multiple players and the human-robot interaction felt pretty natural. However, 
  Given more time, we would have integrated another RealSense camera into our project to assure that the robot can read the cards correctly with high enough accuracy.
 
 ###### Demo Video
@@ -140,7 +138,6 @@ Overall, we were satisfied with how our project turned out. All of the component
 ## Team
 #### Warren Deng
 Warren is a third year double major in EECS and Mechanical Engineering. He has taken EE16B and EE120 and hopes to expand his knowledge in the field of Mechatronics. He worked at an defense contractor doing power engineering his freshman year. For the project, Warren worked on gameplay and kinematics. He wrote most of the gameplay and helped integrate the kinematics so that they worked when neccessary. He also designed the card holder in SolidWorks. 
-#### Henry Leou
 #### Pawel Sendyk   
 Pawel is a senior majoring in CS, with interests in machine learning, big data, and human-robot interaction. You might think that CS takes a lot of time, but he actually spends most of this time in a [swimming pool](https://calbears.com/sports/mens-swimming-and-diving/roster/pawel-sendyk/14865). Following graduation, he will be starting as a software engineer at a start-up in the data analytics space. He worked on the computer vision component of this project.   
 #### Michael Wang
