@@ -6,7 +6,7 @@
 ##### Group Members: Warren Deng, Pawel Sendyk, Henry Leou, Michael Wang, Bryan Yang <br>
 
 Baxter code can be run using
-'roslaunch dealplan blackjack.launch'
+'roslaunch dealplan blackjack.launch' after importing the source files into a ROS package.
 
 Please run the codes via juypter notebook under 
 `[filename]`
