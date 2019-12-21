@@ -13,7 +13,7 @@
 
 
 ## Design
-<img src="https://github.com/psendyk/blackjack/blob/master/blkjk_filestruct.jpg" alt="Project file hierarchy" class="inline"/>
+<img src="https://github.com/psendyk/blackjack/blob/master/blkjk_filestruct.jpg" alt="Project file hierarchy" class="inline" width="200" height="100"/>
 #### Design Criteria
    We had three design rules that we wanted to folow:
    1. Players should only need to communicate with the Baxter via hand gestures in order to play
