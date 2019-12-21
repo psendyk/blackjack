@@ -2,7 +2,7 @@
 
 ##### Group Number: 41 <br>
 ##### Group Members: Warren Deng, Henry Leou, Pawel Sendyk , Michael Wang, Bryan Yang <br>
-<center><img src="./display_images/bj.jpg" alt="test" width="400"/>
+![File](/display_images/bj.jpg)
 
 ## Introduction
 Blackjack is an extremely popular card game that is played in most casinos. We noticed that throughout a game of Blackjack, the dealer goes through a standard procedure: setting up the board, dealing cards to the players, dealing cards to itself, and then checking who won. We thought that this process could be completely automated by replacing the dealer with a robot. Our goal was for multiple players to be able to play a game of Blackjack with the Baxter robot. In doing so we wanted to make the Baxter behave as humanlike as possible by minimizing the amount a player had to manually interact with a computer interface.
