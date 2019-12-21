@@ -15,6 +15,8 @@ The end goal of our project was to have Baxter act as a blackjack dealer, while 
 
 This project had some interesting problems, the most prominent of which were how exactly to move the robot to manipilate cards, and using computer vision to both recognize hand gestures and identify card values. We had to solve what kind of forward or inverse kinematics would manipulate the card into a position where our camera could see the card, all while making sure Baxter did not inadvertently drop or otherwise reveal the dealer's facedown card. Additionally, we had to consider how to flip the cards both from the deck and from the table.
 
+Our project could have real-world applications in casinos, potentially replacing human dealers in games of blackjack.
+
 ## Design
 
 
