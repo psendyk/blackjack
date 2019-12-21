@@ -81,8 +81,9 @@ In the recognition step we used [template matching](https://opencv-python-tutroa
 We started by collecting a dataset containing ~100 frames for each gesture.
 We built and trained a 2-layer convolutional neural network ([CNN](https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)) which gave us 100% test accuracy.
 The CNN creates filters in training, which correspond to different elements of a hand.
-Thanks to the static background, we were able to threshold the images and create a mask, which we then feed into our neural net. This additional preprocessing allowed for a simplified network architecture, which turns out to be the biggest expense in terms of time and memory. Below is an example of the original frame and input into our network.   
-![hand_original](/display_images/hand_original.jpg) ![arrow](/display_images/arrow.jpg) ![hand_input](/display_images/hand_thres)
+Thanks to the static background, we were able to threshold the images and create a mask, which we then feed into our neural net. This additional preprocessing allowed for a simplified network architecture, which turns out to be the biggest expense in terms of time and memory. Below is an example of the original frame and input into our network.    
+![hand_original](./display_images/hand_original.jpg) ![arrow](./display_images/arrow.jpg) ![hand_input](./display_images/hand_thres)    
+<img src="/display_images/hand_original.jpg" alt="hand_original" width="200"/> <img src="/display_images/arrow.jpg" alt="arrow" width="100"/> <img src="/display_images/hand_thres.jpg" alt="hand_thres" width="200"/>
 The main component of our network were two sets of a convolutional layer with [ReLU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks)) activation function, followed by a [max pooling](https://www.quora.com/What-is-max-pooling-in-convolutional-neural-networks) layer.
 Since our implementation supported only two choices (hit or stay), we used a sigmoid activation function in the final layer, which approximates the probability of the corresponding gesture.
 We also augmented the dataset with rotations and translations, which made the network more robust and was necessary for multi-player support.  
@@ -90,8 +91,7 @@ After the robot prompted the player to either hit or stay, we collected multiple
 
 #### Card Holder
 We created a custom card holder for our robot to use. This gave us more precision when picking up the cards because they wouldn’t slide around when being picked up. We decided to laser cut the card holder because it was relatively cheap and much faster than 3D printing. We measured the cards, designed the base and side parts in SolidWorks, and assembled them virtually them to make sure they fit. We then laser cut the box using ¼ inch acrylic.    
-![Test](/display_images/index.png =250x) ![CardBox](/display_images/cardbox.png =250x)
-<img src="/display_images/index.png" alt="test" width="250"/> <img src="/display_images/cardbox.png" alt="cardbox" width="250"/>
+<img src="./display_images/index.png" alt="test" width="250"/> <img src="./display_images/cardbox.png" alt="cardbox" width="250"/>
 
 ## Results
 Our robot was able to follow all of the functionalities that we needed it to do for kinematics. This includes drawing a card, holding a card up to the front camera to read, handing a card off to the other gripper, flipping a card from the table, and dealing to any player.   
