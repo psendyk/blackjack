@@ -109,7 +109,7 @@ Our robot was able to follow all of the functionalities that we needed it to do 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/q_Hr4I73LuA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
-Additionally, it was able to successfully recognize hand gestures of players. Our neural net was very confident of its choices and hand gestures recognition never failed us. An example can be seen in the full demo below.
+Additionally, our robot was able to successfully recognize hand gestures of players. Our neural net was very confident of its choices and hand gestures recognition never failed us. An example can be seen in the full demo below.
 
 Due to limited access to the robots, we worked on the computer vision parts remotely. We underestimated how much time integration takes and ran into some issues while implementing the algorithms on the robot's hardware.  
 As illustrated, our algorithm had trouble extracting the cards from Baxter camera.   
@@ -140,5 +140,5 @@ Bryan is a third year EECS major, with an interest in both hardware and software
 
 
 ## Additional Materials
-[Github Project Repository](https://github.com/psendyk/blackjack)
+[Github Project Repository](https://github.com/psendyk/blackjack)    
 We re-used some parts of the code available [here](https://github.com/arnabdotorg/Playing-Card-Recognition) in preprocessing of the card images.
