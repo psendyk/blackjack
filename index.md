@@ -136,3 +136,4 @@ Bryan is a third year EECS major, with an interest in both hardware and software
 
 ## Additional Materials
 Github Project Repository: https://github.com/psendyk/blackjack
+We re-used some parts of the code available [here](https://github.com/arnabdotorg/Playing-Card-Recognition) in preprocessing of the card images.

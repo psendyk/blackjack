@@ -60,6 +60,7 @@ class CardClassifier():
         return cardname
 
     ### Helpers for image processing ###
+    ### Reference: https://github.com/arnabdotorg/Playing-Card-Recognition ###
 
     def rectify(self, h):
         h = h.reshape((4,2))
