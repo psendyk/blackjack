@@ -96,6 +96,7 @@ Warren is a third year double major in EECS and Mechanical Engineering. He has t
 #### Pawel Sendyk
 #### Michael Wang
 #### Bryan Yang
+Bryan is a third year EECS major, with an interest in both hardware and software. He has taken CS162, EE120, and simultaneously took this class (EE106A) with EE149A. For the project, Bryan designed the basic flow of the gameplay and kinematics, laying out the game's states and Baxter actions, and helped integrate them. He also had to laser cut the card holder since he was the only one with direct access to a laser cutter.
 
 
 ## Additional Materials
