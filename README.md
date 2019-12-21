@@ -8,10 +8,3 @@
 Baxter code can be run using
 'roslaunch dealplan blackjack.launch' after importing the source files into a ROS package.
 
-Please run the codes via juypter notebook under 
-`[filename]`
-or navigate to the directory via terminal
-
-`[directory]`
-
-and run python3 -u `<file_name>.py`
