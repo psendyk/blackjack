@@ -13,6 +13,7 @@
 
 
 ## Design
+<img src="https://github.com/psendyk/blackjack/blob/master/blkjk_filestruct.jpg" alt="Project file hierarchy" class="inline"/>
 #### Design Criteria
    We had three design rules that we wanted to folow:
    1. Players should only need to communicate with the Baxter via hand gestures in order to play
@@ -36,11 +37,14 @@ When the game starts, a user-inputted amount of Players are created, along with 
 Now each player is allowed to play their turn. A player’s turn consists of either hitting or standing (in which case their turn is over). Everytime they hit a card is appended to their hand. This hand is then checked to make sure they haven’t busted. Aces are handled automatically by choosing the highest possible value without having the hand bust.
 If all players have not busted after their turns, the dealer gets its turn. It is forced to hit until it busts or passes a hand value of 17. If the dealer busts, everyone who hasn’t busted wins. If the dealer doesn’t bust, every player who hasn’t busted that has a higher hand value than the dealer wins. The game is now over and all variables are reset.
 #### Kinematics
+
 #### Computer Vision
+
 #### Card Holder
 We created a custom card holder for our robot to use. This gave us more precision when picking up the cards because they wouldn’t slide around when being picked up. We decided to laser cut the card holder because it was relatively cheap and much faster than 3D printing. We measured the cards, designed the base and side parts in SolidWorks, and assembled virtually them to make sure they fit. We then laser cut the box using ¼ inch acrylic.    
+<img src="https://github.com/psendyk/blackjack/blob/master/index.png" alt="Project file hierarchy" class="inline"/>
 
-<img src="https://github.com/psendyk/blackjack/blob/master/blkjk_filestruct.jpg" alt="Project file hierarchy" class="inline"/>
+
 
 
 ## Results
