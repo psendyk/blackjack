@@ -19,10 +19,12 @@
    2. Baxter should be relatively fast and precise when dealing cards
    3. All major rules of Blackjack should be followed (such as not revealing the dealer's second card until after everyone's turn)
 #### Our Design
+   As described previously, we decided to split our project into three parts: Gameplay, Kinematics, and Computer Vision. After finishing every part we would combine them in the blackjack.py file so that only one script would need to be run.  
 #### Design Choices
 ###### Gameplay
 ###### Kinematics
-###### Computer Vision 
+###### Computer Vision
+#### Design Choices Impact
 
 
 ## Implementation
@@ -32,6 +34,11 @@ To keep track of everyone playing, we created a Player class that has the follow
 When the game starts, a user-inputted amount of Players are created, along with the dealer. They are each dealt two cards. The dealer’s hand is then checked to see if it has blackjack. If it does, the game is over and each player who doesn’t have blackjack loses. If it doesn’t, the game continues. 
 Now each player is allowed to play their turn. A player’s turn consists of either hitting or standing (in which case their turn is over). Everytime they hit a card is appended to their hand. This hand is then checked to make sure they haven’t busted. Aces are handled automatically by choosing the highest possible value without having the hand bust.
 If all players have not busted after their turns, the dealer gets its turn. It is forced to hit until it busts or passes a hand value of 17. If the dealer busts, everyone who hasn’t busted wins. If the dealer doesn’t bust, every player who hasn’t busted that has a higher hand value than the dealer wins. The game is now over and all variables are reset.
+#### Kinematics
+#### Computer Vision
+#### Card Holder
+We created a custom card holder for our robot to use. This gave us more precision when picking up the cards because they wouldn’t slide around when being picked up. We decided to laser cut the card holder because it was relatively cheap and much faster than 3D printing. We measured the cards, designed the base and side parts in SolidWorks, and assembled virtually them to make sure they fit. We then laser cut the box using ¼ inch acrylic.    
+
 
 
 
