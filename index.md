@@ -29,12 +29,15 @@
 ###### Kinematics
 We decided to attach a gripper on each of Baxter's arms to allow it to efficiently pick up, flip, and deal the cards. For Baxter's movement we planned on primarily using inverse kinematics with the MoveIt package to perform motion planning for card manipulation. We also added constraints and objects within MoveIt, similar to how Lab 8 worked, to avoid hitting the table or the deck. Four different motions are required to deal the blackjack game. Baxter needs to pick up the card, look at it, and place it down. Placing the card face up requires the card to be flipped, which is achieved by handing the card off to the other arm. Additionally, movements of both arms are parallelized for efficiency, meaning that Baxter can deal a card while pick up the next.
 ###### Computer Vision
+We decided to use a neural network for our implementation of the gesture classifier, which allowed for more generalization without adding more complexity to the code. It's also easily extensible to more gestures, such as split or double down, which we collected in our dataset but decided not to include in the gameplay as mentioned above.
+We built the card classifier for a specific deck of cards, i.e. it can only work with one type of cards at a time. We made sure to make it easy to load and use different decks, provided images of it. The size of a deck of cards creates a 52-dimensional classification problem, which we decided would be best solved with a minimum difference algorithm.
+
 
 #### Design Choices Impact
 ##### Robustness
 By using forward kinematics, Baxter's motion was very consistent and robust, able to regularly achieve satisfactory results over several trials. The drawing motion was quite consistent; apart from unexpected suction gripper failures Baxter was able to draw cards easily. However, due to the use of dual suction grippers and the way we had Baxter hand off the card between grippers, the card flipping action had less consistent results. Most of the time the card handoff went smoothly, but on occasion the receiving gripper would not activate in time or would end up slightly out of position, resulting in Baxter dropping the card.
 
-Our computer vision for recognizing hand gestures was quite robust, with high accuracy given a blank background and a particular camera distance. For card recognition on the other hand, while functional in a testing environment our computer vision did not work well with the Baxter's head camera since the background of the captured image was too noisy.
+Our computer vision for recognizing hand gestures was quite robust, with high accuracy given a blank background. The way we collected and augmented the dataset allowed our to recognize gestures of multiple players from different angles and distances. For card recognition on the other hand, while functional in a testing environment our computer vision did not work well with the Baxter's head camera since the background of the captured image was too noisy.
 ##### Durability
 For Baxter's kinematics, by mostly using forward kinematics our motion system was quite durable, able to achieve the same position over and over again. Combined with MoveIt constraints and inverse kinematics for other actions, Baxter's movements are easily repeatable between different games of blackjack.
 ##### Efficiency
@@ -67,9 +70,6 @@ If all players have not busted after their turns, the dealer gets its turn. It i
 The robot kinematics and the various actions are broken down into several smaller poses, located in `arm_kinematics.py`.
 
 When testing to find out what positions we wanted Baxter in for its various actions, we found that MoveIt did not produce consistent or desirable results. For example, when Baxter draws and looks at a card the card should be tilted up at an angle to face the head camera, but MoveIt frequently held the card perfectly straight and not at a good camera angle. Therefore, we ended up using a combination of both forward and inverse kinematics to consistently achieve very specific desired postures. We manipulated Baxter's arms into our desired positions, used `tf_echo` to record the angles, then used forward kinematics to achieve that position in our code.
-#### Computer Vision
-
-
 
 
 #### Computer Vision
@@ -79,19 +79,18 @@ Once we've found the contours, we use an affine transform to get the card in a r
 In the recognition step we used [template matching](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_template_matching/py_template_matching.html) to compare the captured card against every card in our deck, and output the one with minimum squared difference.
 ##### Hand-gesture Recognition
 We started by collecting a dataset containing ~100 frames for each gesture.
-We built and trained a 2-layer convolutional neural network ([CNN] (https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)) which gave us 100% test accuracy.
+We built and trained a 2-layer convolutional neural network ([CNN](https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)) which gave us 100% test accuracy.
 The CNN creates filters in training, which correspond to different elements of a hand.
-Thanks to the static background, we were able to threshold the images and create a mask, which we then feed into our neural net. This additional preprocessing allowed for a simplified network architecture, which turns out to be the biggest [...] in terms of time and memory. Below is an example input into our network.   
+Thanks to the static background, we were able to threshold the images and create a mask, which we then feed into our neural net. This additional preprocessing allowed for a simplified network architecture, which turns out to be the biggest expense in terms of time and memory. Below is an example input into our network.   
 [insert pic of preprocessing]   
-The main component of our network were two sets of a convolutional layer with [ReLU] (https://en.wikipedia.org/wiki/Rectifier_(neural_networks)) activation function, followed by a [max pooling] (https://www.quora.com/What-is-max-pooling-in-convolutional-neural-networks) layer.
+The main component of our network were two sets of a convolutional layer with [ReLU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks)) activation function, followed by a [max pooling](https://www.quora.com/What-is-max-pooling-in-convolutional-neural-networks) layer.
 Since our implementation supported only two choices (hit or stay), we used a sigmoid activation function in the final layer, which approximates the probability of the corresponding gesture.
 We also augmented the dataset with rotations and translations, which made the network more robust and was necessary for multi-player support.  
 After the robot prompted the player to either hit or stay, we collected multiple frames over ~2s window, classified each, and chose the gesture with the most votes.
 
 #### Card Holder
 We created a custom card holder for our robot to use. This gave us more precision when picking up the cards because they wouldn’t slide around when being picked up. We decided to laser cut the card holder because it was relatively cheap and much faster than 3D printing. We measured the cards, designed the base and side parts in SolidWorks, and assembled them virtually them to make sure they fit. We then laser cut the box using ¼ inch acrylic.    
-![Test](/display_images/index.png)
-![CardBox](/display_images/cardbox.png)
+![Test](/display_images/index.png =250px) ![CardBox](/display_images/cardbox.png =250px)
 
 ## Results
 Our robot was able to follow all of the functionalities that we needed it to do for kinematics. This includes drawing a card, holding a card up to the front camera to read, handing a card off to the other gripper, flipping a card from the table, and dealing to any player.   
