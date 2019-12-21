@@ -67,6 +67,9 @@ The robot kinematics and the various actions are broken down into several smalle
 
 When testing to find out what positions we wanted Baxter in for its various actions, we found that MoveIt did not produce consistent or desirable results. For example, when Baxter draws and looks at a card the card should be tilted up at an angle to face the head camera, but MoveIt frequently held the card perfectly straight and not at a good camera angle. Therefore, we ended up using a combination of both forward and inverse kinematics to consistently achieve very specific desired postures. We manipulated Baxter's arms into our desired positions, used `tf_echo` to record the angles, then used forward kinematics to achieve that position in our code.
 
+For robustness, Baxter repeatedly attempts to grasp the card until it is sucessfully attached, at which point it will move onto the next action.
+
+
 
 #### Computer Vision
 ##### Card Recognition  
@@ -131,6 +134,7 @@ Warren is a third year double major in EECS and Mechanical Engineering. He has t
 #### Pawel Sendyk   
 Pawel is a senior majoring in CS, with interests in machine learning, big data, and human-robot interaction. You might think that CS takes a lot of time, but he actually spends most of this time in a [swimming pool](https://calbears.com/sports/mens-swimming-and-diving/roster/pawel-sendyk/14865). Following graduation, he will be starting as a software engineer at a start-up in the data analytics space. He worked on the computer vision component of this project.   
 #### Michael Wang
+Michael is a third year double majoring in EECS and ME. He has relevant experience in MEC134, ME135, EE16B, and EE120. For the project, Michael specialized in the kinematics, designing the movements at the lower level and implementing the kinematics, including parallelizing and optimizing the robustness of the movements. 
 #### Bryan Yang
 Bryan is a third year EECS major, with an interest in both hardware and software. He has taken CS162, EE120, and simultaneously took this class (EE106A) with EE149A. For the project, Bryan designed the basic flow of the gameplay and kinematics, laying out the game's states and Baxter actions, and helped integrate them. He also had to laser cut the card holder since he was the only one with direct access to a laser cutter.
 
