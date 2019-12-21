@@ -13,11 +13,16 @@
 
 
 ## Design
+#### Design Criteria
    We had three design rules that we wanted to folow:
    1. Players should only need to communicate with the Baxter via hand gestures in order to play
    2. Baxter should be relatively fast and precise when dealing cards
    3. All major rules of Blackjack should be followed (such as not revealing the dealer's second card until after everyone's turn)
-
+#### Our Design
+#### Design Choices
+###### Gameplay
+###### Kinematics
+###### Computer Vision 
 
 
 ## Implementation
