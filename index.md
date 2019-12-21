@@ -90,7 +90,7 @@ After the robot prompted the player to either hit or stay, we collected multiple
 
 #### Card Holder
 We created a custom card holder for our robot to use. This gave us more precision when picking up the cards because they wouldn’t slide around when being picked up. We decided to laser cut the card holder because it was relatively cheap and much faster than 3D printing. We measured the cards, designed the base and side parts in SolidWorks, and assembled them virtually them to make sure they fit. We then laser cut the box using ¼ inch acrylic.    
-![Test](/display_images/index.png =250px) ![CardBox](/display_images/cardbox.png =250px)
+![Test](/display_images/index.png =250x) ![CardBox](/display_images/cardbox.png =250x)
 
 ## Results
 Our robot was able to follow all of the functionalities that we needed it to do for kinematics. This includes drawing a card, holding a card up to the front camera to read, handing a card off to the other gripper, flipping a card from the table, and dealing to any player.   
@@ -127,7 +127,6 @@ Overall, we were satisfied with how our project turned out. All of the component
 
 ###### Demo Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RZcsRvl0Fs4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
->>>>>>> 1a6c12dbf93a776433717317cbea9d864a241382
 
 ## Team
 #### Warren Deng
