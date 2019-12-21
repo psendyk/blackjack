@@ -82,7 +82,7 @@ We started by collecting a dataset containing ~100 frames for each gesture.
 We built and trained a 2-layer convolutional neural network ([CNN](https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)) which gave us 100% test accuracy.
 The CNN creates filters in training, which correspond to different elements of a hand.
 Thanks to the static background, we were able to threshold the images and create a mask, which we then feed into our neural net. This additional preprocessing allowed for a simplified network architecture, which turns out to be the biggest expense in terms of time and memory. Below is an example of the original frame and input into our network.    
-<center><img src="./display_images/hand_original.jpg" alt="hand_original" width="250"/> <img src="./display_images/arrow.jpg" alt="arrow" width="100"/> <img src="./display_images/hand_thres.jpg" alt="hand_thres" width="250"/></center>   
+<center><img src="./display_images/hand_original.png" alt="hand_original" width="250"/> <img src="./display_images/arrow.png" alt="arrow" width="100"/> <img src="./display_images/hand_thres.png" alt="hand_thres" width="250"/></center>   
 The main component of our network were two sets of a convolutional layer with [ReLU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks)) activation function, followed by a [max pooling](https://www.quora.com/What-is-max-pooling-in-convolutional-neural-networks) layer.
 Since our implementation supported only two choices (hit or stay), we used a sigmoid activation function in the final layer, which approximates the probability of the corresponding gesture.
 We also augmented the dataset with rotations and translations, which made the network more robust and was necessary for multi-player support.  
@@ -99,9 +99,9 @@ Additionally, it was able to successfully recognize hand gestures of players. Ou
 
 Due to limited access to the robots, we worked on the computer vision parts remotely. We underestimated how much time integration takes and ran into some issues while implementing the algorithms on the robot's hardware.  
 As illustrated, our algorithm had trouble extracting the cards from Baxter camera.   
-<center><img src="./display_images/baxter_full.jpg" alt="baxter_full" width="250"/> <img src="./display_images/arrow.jpg" alt="arrow" width="100"/> <img src="./display_images/baxter_card.jpg" alt="baxter_card" width="250"/></center>     
+<center><img src="./display_images/baxter_full.png" alt="baxter_full" width="250"/> <img src="./display_images/arrow.png" alt="arrow" width="100"/> <img src="./display_images/baxter_card.png" alt="baxter_card" width="250"/></center>     
 For comparison, here's how it worked with RealSense camera, which we were just a little bit short of integrating into our project.   
-<center><img src="./display_images/test_full.jpg" alt="test_full" width="250"/> <img src="./display_images/arrow.jpg" alt="arrow" width="100"/> <img src="./display_images/test_card.jpg" alt="baxter_card" width="250"/></center>     
+<center><img src="./display_images/test_full.png" alt="test_full" width="250"/> <img src="./display_images/arrow.png" alt="arrow" width="100"/> <img src="./display_images/test_card.png" alt="baxter_card" width="250"/></center>     
 This might not seem like a big difference but sometimes it was enough to misclassify the cards, which wasn't acceptable for our blackjack dealer.
 
 
