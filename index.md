@@ -129,16 +129,15 @@ This might not seem like a big difference but sometimes it was enough to misclas
 
 ## Conclusion
 
-Overall, we were satisfied with how our project turned out. In terms of kinematics and gameplay, we attained our original goals: the game supported multiple players and the human-robot interaction felt pretty natural. However 
- Given more time, we would have integrated another RealSense camera into our project to assure that the robot can read the cards correctly with high enough accuracy.
+Overall, we were satisfied with how our project turned out. In terms of kinematics and gameplay, we attained our original goals: the game supported multiple players and the human-robot interaction felt pretty natural. However we fell a little short in terms of computer vision integration because it did not work particularly well when using the Baxter head camera. Given more time, we would have integrated another RealSense camera into our project to assure that the robot can read the cards correctly with high enough accuracy.
 
 #### Improvements
-If we were to expand upon the project, we would definitely find a way to implement betting either through physical means such as poker chips or digitally through the Baxter's code. This would fall in line with our design criteria of making our project as similar to a real Blackjack game. This would also allow us to introduce doubling down.
+If we were to expand upon the project, we would definitely find a way to implement betting either through physical means such as poker chips or digitally through the Baxter's code. This would fall in line with our design criteria of making our project as similar to a real Blackjack game, and allow us to introduce doubling down.
 
 
-For kinematics, we would want to eliminate most uses of forward kinematics, and instead rely on just inverse kinematics. This would increase robustness as our game could then be played on any surface of any height as opposed to the one that we hard-coded the knematics for. 
+For kinematics, we would want to eliminate most uses of forward kinematics, and instead rely on just inverse kinematics. This would increase robustness as our game could then be played on any surface of any height as opposed to the one that we hard-coded the knematics for. However, this implementation may reduce the speed at which the Baxter deals as we noticed that inverse kinematics sometimes finds extremely bizzare paths. 
 
-In terms of computer vision, we had originally envisioned the Baxter to be able to read the entire table throughout the game via a real sense camera so that it knows what hands each player has without having to scan each individual card when drawing. This would save the Baxter a lot of time when dealing (because each card could just be directly placed down) and we would only need a single camera for the entire project because gestures could also be read through this camera. Having a camera pointed at the table also means that the Baxter could be able to detect where to pick up the cards and place them down, without having predefined locations for either. 
+In terms of computer vision, we had originally envisioned the Baxter to be able to read the entire table throughout the game via a real sense camera so that it knows what hands each player has without having to scan each individual card when drawing. This would save the Baxter a lot of time when dealing (because each card could just be directly placed down) and we would only need a single camera for the entire project because gestures could also be read through this camera. Having a camera pointed at the table also means that the Baxter could be able to detect where to pick up the cards and place them down, without having predefined locations for either, improving robustness. 
 
 ##### Demo Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RZcsRvl0Fs4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
