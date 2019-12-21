@@ -13,7 +13,7 @@ To replace the dealer, we needed to accomplish three tasks. First, we needed to 
     
 The most obvious real-world application for our project is replacing Blackjack dealers in casinos. Casinos would save a lot of money and would still satisfy players who would rather play Blackjack with physical cards instead of digitally. Our implementation of drawing, interpreting, and dealing cards could also be applied to different casino card games such as poker.
 
-
+![Filed](/display_images/head.png)
 ## Design
 ![File Hierarchy](/display_images/blkjk_filestruct.jpg)
 <!--img src="https://github.com/psendyk/blackjack/blob/master/blkjk_filestruct.jpg" alt="Project file hierarchy" class="inline"/-->
